@@ -2,7 +2,7 @@ export default function Feature01Section({ navigate }) {
     return (
         <section className="sticky top-0 z-20 w-full min-h-screen text-black flex flex-col">
             <div className="relative w-full flex-1 flex flex-col">
-                <div className="absolute inset-0 bg-[url('background/featured-01-mobile.png')] md:bg-[url('background/featured-01.png')] bg-cover bg-center z-0"></div>
+                <div className="absolute inset-0 bg-[url('/background/fm1.png')] md:bg-[url('/background/f1.png')] bg-cover bg-center z-0"></div>
 
                 <div className="relative z-10 w-full flex-1 flex flex-col pt-20 md:pt-30 pb-8 md:pb-10 px-4 md:px-10 gap-4 md:gap-6">
 

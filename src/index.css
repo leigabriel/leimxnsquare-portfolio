@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+body {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+* {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+    display: none;
+}

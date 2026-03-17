@@ -1,4 +1,116 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
+
+const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789*#@!'
+
+function ScrambleLink({ label, onClick }) {
+    const [display, setDisplay] = useState(label)
+    const [hovered, setHovered] = useState(false)
+    const [dotWidth, setDotWidth] = useState(0)
+    const frameRef = useRef(null)
+    const iterRef = useRef(0)
+    const labelUpper = label.toUpperCase()
+
+    const scramble = () => {
+        cancelAnimationFrame(frameRef.current)
+        iterRef.current = 0
+        const total = labelUpper.length
+        const maxIter = total * 3
+
+        const step = () => {
+            iterRef.current++
+            const progress = iterRef.current / maxIter
+            const resolved = Math.floor(progress * total)
+
+            const next = labelUpper
+                .split('')
+                .map((char, i) => {
+                    if (i < resolved) return char
+                    return CHARS[Math.floor(Math.random() * CHARS.length)]
+                })
+                .join('')
+
+            setDisplay(next)
+
+            if (iterRef.current < maxIter) {
+                frameRef.current = requestAnimationFrame(step)
+            } else {
+                setDisplay(labelUpper)
+            }
+        }
+
+        frameRef.current = requestAnimationFrame(step)
+    }
+
+    const restore = () => {
+        cancelAnimationFrame(frameRef.current)
+        setDisplay(label)
+    }
+
+    useEffect(() => () => cancelAnimationFrame(frameRef.current), [])
+
+    return (
+        <button
+            onClick={onClick}
+            onMouseEnter={() => { setHovered(true); scramble() }}
+            onMouseLeave={() => { setHovered(false); restore() }}
+            className="w-full text-left group"
+            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+        >
+            <span style={{
+                display: 'block',
+                fontSize: 'clamp(3rem, 10vw, 6rem)',
+                lineHeight: 1,
+                letterSpacing: hovered ? '0.02em' : '-0.03em',
+                fontWeight: 400,
+                color: '#000',
+                paddingTop: '0.25em',
+                paddingBottom: '0.25em',
+                borderBottom: '1.5px dotted rgba(0,0,0,0.25)',
+                position: 'relative',
+                transition: 'letter-spacing 0.35s cubic-bezier(0.34,1.56,0.64,1)',
+                userSelect: 'none',
+            }}>
+                <span style={{
+                    display: 'inline-block',
+                    transform: hovered ? 'translateX(8px)' : 'translateX(0)',
+                    transition: 'transform 0.35s cubic-bezier(0.34,1.56,0.64,1)',
+                }}>
+                    {display}
+                </span>
+
+                {/* Bouncy underline */}
+                <span style={{
+                    position: 'absolute',
+                    left: 0,
+                    bottom: -1,
+                    height: 0,
+                    borderBottom: '2px dotted rgba(0,0,0,0.6)',
+                    width: hovered ? '100%' : '0%',
+                    transition: hovered
+                        ? 'width 0.45s cubic-bezier(0.34,1.56,0.64,1)'
+                        : 'width 0.25s ease',
+                    display: 'block',
+                }} />
+
+                {/* Little star that pops on hover */}
+                <span style={{
+                    position: 'absolute',
+                    right: 8,
+                    top: '50%',
+                    transform: hovered
+                        ? 'translateY(-50%) scale(1) rotate(20deg)'
+                        : 'translateY(-50%) scale(0) rotate(-20deg)',
+                    transition: 'transform 0.4s cubic-bezier(0.34,1.56,0.64,1)',
+                    fontSize: 'clamp(0.8rem, 2vw, 1.4rem)',
+                    lineHeight: 1,
+                    pointerEvents: 'none',
+                }}>
+                    ✦
+                </span>
+            </span>
+        </button>
+    )
+}
 
 export default function Menu({ setIsMenuOpen, navigate }) {
     const [visible, setVisible] = useState(false)
@@ -55,24 +167,6 @@ export default function Menu({ setIsMenuOpen, navigate }) {
                 .menu-item:nth-child(3) { animation-delay: 0.29s; }
                 .menu-item:nth-child(4) { animation-delay: 0.36s; }
                 .menu-item:nth-child(5) { animation-delay: 0.43s; }
-
-                .menu-link {
-                    display: block;
-                    font-size: clamp(3rem, 10vw, 6rem);
-                    line-height: 1;
-                    letter-spacing: -0.03em;
-                    font-weight: 400;
-                    color: black;
-                    text-decoration: none;
-                    border-bottom: 1.5px dotted rgba(0,0,0,0.5);
-                    padding: 0.3em 0;
-                    transition: opacity 0.2s, padding-left 0.3s, background 0.3s ease;
-                }
-                .menu-link:hover {
-                    background: white;
-                    opacity: 1;
-                    padding-left: 0.15em;
-                }
             `}</style>
 
             <div
@@ -86,7 +180,12 @@ export default function Menu({ setIsMenuOpen, navigate }) {
                     <span className="text-black text-xs tracking-widest uppercase">LEIMXNSQUARE</span>
                     <button
                         onClick={close}
-                        className="text-black text-xs tracking-widest uppercase hover:opacity-50 transition-opacity"
+                        className={`
+        text-black text-xs tracking-widest uppercase
+        transition-all duration-300 ease-out
+        hover:bg-white hover:text-black
+        hover:-translate-y-1
+    `}
                     >
                         CLOSE
                     </button>
@@ -95,12 +194,7 @@ export default function Menu({ setIsMenuOpen, navigate }) {
                 <nav className="flex flex-col flex-1 justify-center gap-0 -mt-4">
                     {links.map(({ label, dest }) => (
                         <div key={label} className="menu-item">
-                            <button
-                                onClick={() => handleNav(dest)}
-                                className="menu-link w-full text-left"
-                            >
-                                {label}
-                            </button>
+                            <ScrambleLink label={label} onClick={() => handleNav(dest)} />
                         </div>
                     ))}
                 </nav>

@@ -5,8 +5,11 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 export default function HeroSection({ setIsMenuOpen }) {
     const mountRef = useRef(null)
     const lastYRef = useRef(0)
+    const isHoveringBee = useRef(false)
+    const cursorPos = useRef({ x: 0, y: 0 })
     const [menuVisible, setMenuVisible] = useState(true)
     const [typedText, setTypedText] = useState('')
+    const [hearts, setHearts] = useState([])
 
     useEffect(() => {
         const text = 'A COLLECTION\nOF DESIGNS'
@@ -112,12 +115,50 @@ export default function HeroSection({ setIsMenuOpen }) {
             (err) => console.error(err)
         )
 
+        let heartCounter = 0
+        const spawnHeart = (x, y) => {
+            const id = heartCounter++
+            const spreadX = x + (Math.random() - 0.5) * 30
+            const spreadY = y + (Math.random() - 0.5) * 30
+
+            setHearts(prev => [...prev, { id, x: spreadX, y: spreadY }])
+            setTimeout(() => {
+                setHearts(prev => prev.filter(h => h.id !== id))
+            }, 1200)
+        }
+
+        const raycaster = new THREE.Raycaster()
+        const mouse = new THREE.Vector2()
+
         const onMouseMove = (e) => {
             const rect = mount.getBoundingClientRect()
+
+            cursorPos.current = { x: e.clientX, y: e.clientY }
+
+            mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1
+            mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1
+
             const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2
             const ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2
-            targetRotY = nx * Math.PI * 0.6
-            targetRotX = ny * Math.PI * 0.3
+            targetRotY = nx * Math.PI * 0.5
+            targetRotX = ny * Math.PI * 0.25
+
+            if (beeRoot) {
+                raycaster.setFromCamera(mouse, camera)
+                const intersects = raycaster.intersectObject(beeRoot, true)
+
+                if (intersects.length > 0) {
+                    isHoveringBee.current = true
+                    mount.style.cursor = 'pointer'
+                } else {
+                    isHoveringBee.current = false
+                    mount.style.cursor = 'grab'
+                }
+            }
+        }
+
+        const onMouseLeave = () => {
+            isHoveringBee.current = false
         }
 
         let isDragging = false
@@ -126,8 +167,21 @@ export default function HeroSection({ setIsMenuOpen }) {
 
         const onTouchStart = (e) => {
             isDragging = true
+            isHoveringBee.current = false
             prevX = e.touches[0].clientX
             prevY = e.touches[0].clientY
+
+            const rect = mount.getBoundingClientRect()
+            mouse.x = ((prevX - rect.left) / rect.width) * 2 - 1
+            mouse.y = -((prevY - rect.top) / rect.height) * 2 + 1
+
+            if (beeRoot) {
+                raycaster.setFromCamera(mouse, camera)
+                const intersects = raycaster.intersectObject(beeRoot, true)
+                if (intersects.length > 0) {
+                    spawnHeart(prevX, prevY)
+                }
+            }
         }
 
         const onTouchMove = (e) => {
@@ -143,28 +197,38 @@ export default function HeroSection({ setIsMenuOpen }) {
         }
 
         mount.addEventListener('mousemove', onMouseMove)
+        mount.addEventListener('mouseleave', onMouseLeave)
         mount.addEventListener('touchstart', onTouchStart, { passive: true })
         mount.addEventListener('touchmove', onTouchMove, { passive: true })
         mount.addEventListener('touchend', onTouchEnd)
 
         const clock = new THREE.Clock()
+        let lastHeartSpawn = 0
 
         const animate = () => {
             animId = requestAnimationFrame(animate)
             const t = clock.getElapsedTime()
 
+            if (isHoveringBee.current) {
+                const now = Date.now()
+                if (now - lastHeartSpawn > 120) {
+                    spawnHeart(cursorPos.current.x, cursorPos.current.y)
+                    lastHeartSpawn = now
+                }
+            }
+
             if (beeRoot) {
-                rotY += (targetRotY - rotY) * 0.08
-                rotX += (targetRotX - rotX) * 0.08
+                rotY += (targetRotY - rotY) * 0.06
+                rotX += (targetRotX - rotX) * 0.06
 
                 beeRoot.rotation.y = Math.PI + rotY
                 beeRoot.rotation.x = rotX
-                beeRoot.position.y = Math.sin(t * 1.8) * 0.05
+                beeRoot.position.y = Math.sin(t * 2.5) * 0.08
 
                 if (rightWing && rightWingBaseQ) {
                     const flapQ = new THREE.Quaternion().setFromAxisAngle(
                         new THREE.Vector3(0, 1, 0),
-                        Math.sin(t * 20) * 0.8
+                        Math.sin(t * 40) * 0.65
                     )
                     rightWing.quaternion.multiplyQuaternions(rightWingBaseQ, flapQ)
                 }
@@ -172,7 +236,7 @@ export default function HeroSection({ setIsMenuOpen }) {
                 if (leftWing && leftWingBaseQ) {
                     const flapQ = new THREE.Quaternion().setFromAxisAngle(
                         new THREE.Vector3(0, 1, 0),
-                        -Math.sin(t * 20) * 0.8
+                        -Math.sin(t * 40) * 0.65
                     )
                     leftWing.quaternion.multiplyQuaternions(leftWingBaseQ, flapQ)
                 }
@@ -181,7 +245,7 @@ export default function HeroSection({ setIsMenuOpen }) {
                     legs.forEach((leg, i) => {
                         const swayQ = new THREE.Quaternion().setFromAxisAngle(
                             new THREE.Vector3(1, 0, 0),
-                            Math.sin(t * 6 + i * 1.5) * 0.15
+                            Math.sin(t * 5 + i * 1.5) * 0.1
                         )
                         leg.quaternion.multiplyQuaternions(legsBaseQ[i], swayQ)
                     })
@@ -191,7 +255,7 @@ export default function HeroSection({ setIsMenuOpen }) {
                     antennae.forEach((ant, i) => {
                         const swayQ = new THREE.Quaternion().setFromAxisAngle(
                             new THREE.Vector3(1, 0, 0),
-                            Math.sin(t * 8 + i) * 0.2
+                            Math.sin(t * 8 + i) * 0.15
                         )
                         ant.quaternion.multiplyQuaternions(antennaeBaseQ[i], swayQ)
                     })
@@ -200,7 +264,7 @@ export default function HeroSection({ setIsMenuOpen }) {
                 if (stinger && stingerBaseQ) {
                     const swayQ = new THREE.Quaternion().setFromAxisAngle(
                         new THREE.Vector3(1, 0, 0),
-                        Math.sin(t * 12) * 0.15
+                        Math.sin(t * 10) * 0.1
                     )
                     stinger.quaternion.multiplyQuaternions(stingerBaseQ, swayQ)
                 }
@@ -226,6 +290,7 @@ export default function HeroSection({ setIsMenuOpen }) {
             cancelAnimationFrame(animId)
             window.removeEventListener('resize', onResize)
             mount.removeEventListener('mousemove', onMouseMove)
+            mount.removeEventListener('mouseleave', onMouseLeave)
             mount.removeEventListener('touchstart', onTouchStart)
             mount.removeEventListener('touchmove', onTouchMove)
             mount.removeEventListener('touchend', onTouchEnd)
@@ -239,46 +304,79 @@ export default function HeroSection({ setIsMenuOpen }) {
     return (
         <>
             <style>{`
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(14px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
+                @keyframes fadeUp {
+                    from { opacity: 0; transform: translateY(14px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
 
-        @keyframes scrollBounce {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(6px); }
-        }
+                @keyframes scrollBounce {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(6px); }
+                }
 
-        @keyframes cursorBlink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
-        }
+                @keyframes cursorBlink {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0; }
+                }
 
-        .fade-a { opacity: 0; animation: fadeUp 0.55s ease-out 0.3s forwards; }
-        .fade-b { opacity: 0; animation: fadeUp 0.55s ease-out 0.45s forwards; }
-        .fade-c { opacity: 0; animation: fadeUp 0.55s ease-out 0.6s forwards; }
-        .fade-d { opacity: 0; animation: fadeUp 0.55s ease-out 0.6s forwards; }
-        .fade-e { opacity: 0; animation: fadeUp 0.55s ease-out 0.75s forwards; }
+                @keyframes popAndFloat {
+                    0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0; }
+                    15% { transform: translate(-50%, -30px) scale(1); opacity: 1; }
+                    100% { transform: translate(-50%, -140px) scale(0.8); opacity: 0; }
+                }
 
-        .scroll-bounce { animation: scrollBounce 1.8s ease-in-out infinite; }
+                .fade-a { opacity: 0; animation: fadeUp 0.55s ease-out 0.3s forwards; }
+                .fade-b { opacity: 0; animation: fadeUp 0.55s ease-out 0.45s forwards; }
+                .fade-c { opacity: 0; animation: fadeUp 0.55s ease-out 0.6s forwards; }
+                .fade-d { opacity: 0; animation: fadeUp 0.55s ease-out 0.6s forwards; }
+                .fade-e { opacity: 0; animation: fadeUp 0.55s ease-out 0.75s forwards; }
 
-        .cursor {
-          display: inline-block;
-          width: 6px;
-          height: 12px;
-          background-color: white;
-          margin-left: 2px;
-          animation: cursorBlink 1s step-end infinite;
-          vertical-align: middle;
-        }
-      `}</style>
+                .scroll-bounce { animation: scrollBounce 1.8s ease-in-out infinite; }
+
+                .cursor {
+                    display: inline-block;
+                    width: 6px;
+                    height: 12px;
+                    background-color: white;
+                    margin-left: 2px;
+                    animation: cursorBlink 1s step-end infinite;
+                    vertical-align: middle;
+                }
+
+                .heart-img-wrapper {
+                    position: absolute;
+                    pointer-events: none;
+                    animation: popAndFloat 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+                    z-index: 100;
+                    width: 80px;
+                    height: 80px;
+                }
+
+                .heart-img-wrapper img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+            `}</style>
 
             <section className="sticky top-0 z-0 bg-black w-full h-dvh overflow-hidden">
                 <div
                     ref={mountRef}
-                    className="absolute inset-0 w-full h-full"
-                    style={{ cursor: 'grab' }}
+                    className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
                 />
+
+                {hearts.map((heart) => (
+                    <div
+                        key={heart.id}
+                        className="heart-img-wrapper"
+                        style={{ left: heart.x, top: heart.y }}
+                    >
+                        <img
+                            src="/heart.png"
+                            alt="heart"
+                        />
+                    </div>
+                ))}
 
                 <div className="absolute inset-0 z-10 flex flex-col justify-between p-4 sm:p-6 md:p-10 pointer-events-none">
                     <div className="flex justify-between items-start w-full pointer-events-auto">
@@ -289,16 +387,16 @@ export default function HeroSection({ setIsMenuOpen }) {
                         <button
                             onClick={() => setIsMenuOpen(true)}
                             className={`
-                fade-b
-                text-white text-xs sm:text-sm tracking-widest uppercase
-                transition-all duration-300 ease-out
-                hover:bg-white hover:text-black
-                hover:-translate-y-1
-                ${menuVisible
+                                fade-b
+                                text-white text-xs sm:text-sm tracking-widest uppercase cursor-pointer
+                                transition-all duration-300 ease-out
+                                hover:bg-white hover:text-black
+                                hover:-translate-y-1
+                                ${menuVisible
                                     ? 'opacity-100 translate-y-0 pointer-events-auto'
                                     : 'opacity-0 -translate-y-3 pointer-events-none'
                                 }
-              `}
+                            `}
                         >
                             MENU
                         </button>
@@ -325,7 +423,7 @@ export default function HeroSection({ setIsMenuOpen }) {
                                     href="https://wildyriftian.com"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-blue-500 hover:underline"
+                                    className="text-blue-500 hover:underline cursor-pointer"
                                 >
                                     WILDYRIFTIAN.COM
                                 </a>

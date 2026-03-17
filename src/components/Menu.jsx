@@ -5,7 +5,6 @@ const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789*#@!'
 function ScrambleLink({ label, onClick }) {
     const [display, setDisplay] = useState(label)
     const [hovered, setHovered] = useState(false)
-    const [dotWidth, setDotWidth] = useState(0)
     const frameRef = useRef(null)
     const iterRef = useRef(0)
     const labelUpper = label.toUpperCase()
@@ -53,32 +52,37 @@ function ScrambleLink({ label, onClick }) {
             onClick={onClick}
             onMouseEnter={() => { setHovered(true); scramble() }}
             onMouseLeave={() => { setHovered(false); restore() }}
-            className="w-full text-left group"
-            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+            className="w-full text-left group cursor-pointer"
+            style={{ background: 'none', border: 'none', padding: 0 }}
         >
-            <span style={{
-                display: 'block',
-                fontSize: 'clamp(3rem, 10vw, 6rem)',
-                lineHeight: 1,
-                letterSpacing: hovered ? '0.02em' : '-0.03em',
-                fontWeight: 400,
-                color: '#000',
-                paddingTop: '0.25em',
-                paddingBottom: '0.25em',
-                borderBottom: '1.5px dotted rgba(0,0,0,0.25)',
-                position: 'relative',
-                transition: 'letter-spacing 0.35s cubic-bezier(0.34,1.56,0.64,1)',
-                userSelect: 'none',
-            }}>
-                <span style={{
-                    display: 'inline-block',
-                    transform: hovered ? 'translateX(8px)' : 'translateX(0)',
-                    transition: 'transform 0.35s cubic-bezier(0.34,1.56,0.64,1)',
-                }}>
+            <span
+                className="cursor-pointer"
+                style={{
+                    display: 'block',
+                    fontSize: 'clamp(3rem, 10vw, 6rem)',
+                    lineHeight: 1,
+                    letterSpacing: hovered ? '0.02em' : '-0.03em',
+                    fontWeight: 400,
+                    color: '#000',
+                    paddingTop: '0.25em',
+                    paddingBottom: '0.25em',
+                    borderBottom: '1.5px dotted rgba(0,0,0,0.25)',
+                    position: 'relative',
+                    transition: 'letter-spacing 0.35s cubic-bezier(0.34,1.56,0.64,1)',
+                    userSelect: 'none',
+                }}
+            >
+                <span
+                    className="cursor-pointer"
+                    style={{
+                        display: 'inline-block',
+                        transform: hovered ? 'translateX(8px)' : 'translateX(0)',
+                        transition: 'transform 0.35s cubic-bezier(0.34,1.56,0.64,1)',
+                    }}
+                >
                     {display}
                 </span>
 
-                {/* Bouncy underline */}
                 <span style={{
                     position: 'absolute',
                     left: 0,
@@ -92,7 +96,6 @@ function ScrambleLink({ label, onClick }) {
                     display: 'block',
                 }} />
 
-                {/* Little star that pops on hover */}
                 <span style={{
                     position: 'absolute',
                     right: 8,
@@ -170,7 +173,7 @@ export default function Menu({ setIsMenuOpen, navigate }) {
             `}</style>
 
             <div
-                className={`menu-overlay fixed inset-0 z-60 bg-black/20${closing ? ' out' : ''}`}
+                className={`menu-overlay fixed inset-0 z-60 bg-black/20 cursor-pointer ${closing ? ' out' : ''}`}
                 onClick={close}
             />
 
@@ -181,11 +184,11 @@ export default function Menu({ setIsMenuOpen, navigate }) {
                     <button
                         onClick={close}
                         className={`
-        text-black text-xs tracking-widest uppercase
-        transition-all duration-300 ease-out
-        hover:bg-white hover:text-black
-        hover:-translate-y-1
-    `}
+                            text-black text-xs tracking-widest uppercase cursor-pointer
+                            transition-all duration-300 ease-out
+                            hover:bg-white hover:text-black
+                            hover:-translate-y-1
+                        `}
                     >
                         CLOSE
                     </button>

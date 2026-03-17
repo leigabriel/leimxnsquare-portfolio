@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 
@@ -40,13 +39,13 @@ export default function HeroSection({ setIsMenuOpen }) {
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
         renderer.setSize(w, h)
-        renderer.setPixelRatio(window.devicePixelRatio)
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
         renderer.outputColorSpace = THREE.SRGBColorSpace
         mount.appendChild(renderer.domElement)
 
         const scene = new THREE.Scene()
         const camera = new THREE.PerspectiveCamera(55, w / h, 0.01, 100)
-        camera.position.set(0, 0.3, 2.2)
+        camera.position.set(0, 0.3, window.innerWidth < 768 ? 3.2 : 2.2)
 
         scene.add(new THREE.AmbientLight(0xffffff, 1.4))
         const dir = new THREE.DirectionalLight(0xffffff, 2)
@@ -58,6 +57,12 @@ export default function HeroSection({ setIsMenuOpen }) {
         let leftWing = null
         let rightWingBaseQ = null
         let leftWingBaseQ = null
+        let legs = []
+        let legsBaseQ = []
+        let antennae = []
+        let antennaeBaseQ = []
+        let stinger = null
+        let stingerBaseQ = null
         let targetRotY = 0
         let targetRotX = 0
         let rotY = 0
@@ -89,10 +94,22 @@ export default function HeroSection({ setIsMenuOpen }) {
                         leftWing = obj
                         leftWingBaseQ = obj.quaternion.clone()
                     }
+                    if (obj.name.startsWith('leg_')) {
+                        legs.push(obj)
+                        legsBaseQ.push(obj.quaternion.clone())
+                    }
+                    if (obj.name.toLowerCase().includes('lead')) {
+                        antennae.push(obj)
+                        antennaeBaseQ.push(obj.quaternion.clone())
+                    }
+                    if (obj.name.toLowerCase().includes('stinger') && !stinger) {
+                        stinger = obj
+                        stingerBaseQ = obj.quaternion.clone()
+                    }
                 })
             },
             undefined,
-            (err) => console.error('GLTF load error:', err)
+            (err) => console.error(err)
         )
 
         const onMouseMove = (e) => {
@@ -159,6 +176,34 @@ export default function HeroSection({ setIsMenuOpen }) {
                     )
                     leftWing.quaternion.multiplyQuaternions(leftWingBaseQ, flapQ)
                 }
+
+                if (legs.length > 0) {
+                    legs.forEach((leg, i) => {
+                        const swayQ = new THREE.Quaternion().setFromAxisAngle(
+                            new THREE.Vector3(1, 0, 0),
+                            Math.sin(t * 6 + i * 1.5) * 0.15
+                        )
+                        leg.quaternion.multiplyQuaternions(legsBaseQ[i], swayQ)
+                    })
+                }
+
+                if (antennae.length > 0) {
+                    antennae.forEach((ant, i) => {
+                        const swayQ = new THREE.Quaternion().setFromAxisAngle(
+                            new THREE.Vector3(1, 0, 0),
+                            Math.sin(t * 8 + i) * 0.2
+                        )
+                        ant.quaternion.multiplyQuaternions(antennaeBaseQ[i], swayQ)
+                    })
+                }
+
+                if (stinger && stingerBaseQ) {
+                    const swayQ = new THREE.Quaternion().setFromAxisAngle(
+                        new THREE.Vector3(1, 0, 0),
+                        Math.sin(t * 12) * 0.15
+                    )
+                    stinger.quaternion.multiplyQuaternions(stingerBaseQ, swayQ)
+                }
             }
 
             renderer.render(scene, camera)
@@ -170,6 +215,7 @@ export default function HeroSection({ setIsMenuOpen }) {
             const w2 = mount.clientWidth
             const h2 = mount.clientHeight
             camera.aspect = w2 / h2
+            camera.position.z = window.innerWidth < 768 ? 3.2 : 2.2
             camera.updateProjectionMatrix()
             renderer.setSize(w2, h2)
         }

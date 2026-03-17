@@ -1,6 +1,5 @@
-<table>
-    <td width="70%">
-      
-### Hi there 👋
+## Hi
 
-I'm a **graphic designer, UI designer, and frontend developer**. Creating minimal, modern digital experiences. Interested in clean design and interactive interfaces. 
+I’m a graphic designer, UI designer, and frontend developer.
+
+I focus on building minimal, modern digital experiences with clean design and interactive interfaces.

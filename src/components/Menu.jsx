@@ -64,12 +64,13 @@ export default function Menu({ setIsMenuOpen, navigate }) {
                     font-weight: 400;
                     color: black;
                     text-decoration: none;
-                    border-bottom: 1px dotted rgba(0,0,0,0.2);
+                    border-bottom: 1.5px dotted rgba(0,0,0,0.5);
                     padding: 0.3em 0;
-                    transition: opacity 0.2s, padding-left 0.3s;
+                    transition: opacity 0.2s, padding-left 0.3s, background 0.3s ease;
                 }
                 .menu-link:hover {
-                    opacity: 0.5;
+                    background: white;
+                    opacity: 1;
                     padding-left: 0.15em;
                 }
             `}</style>
@@ -107,7 +108,6 @@ export default function Menu({ setIsMenuOpen, navigate }) {
                 <div className="menu-item flex justify-between items-end w-full border-t border-black/10 pt-4">
                     <div className="flex flex-col gap-0.5">
                         <span className="text-black/40 text-[9px] tracking-widest uppercase">ORIENTAL MINDORO, PH</span>
-                        <span className="text-black/40 text-[9px] tracking-widest uppercase">14.2126° N, 121.1636° E</span>
                     </div>
                     <span className="text-black/40 text-[9px] tracking-widest uppercase">©2026</span>
                 </div>

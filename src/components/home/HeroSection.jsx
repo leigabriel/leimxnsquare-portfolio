@@ -10,7 +10,7 @@ export default function HeroSection({ setIsMenuOpen }) {
     const [typedText, setTypedText] = useState('')
 
     useEffect(() => {
-        const text = "A COLLECTION\nOF DESIGNS"
+        const text = 'A COLLECTION\nOF DESIGNS'
         let i = 0
         const timer = setInterval(() => {
             setTypedText(text.substring(0, i + 1))
@@ -112,6 +112,7 @@ export default function HeroSection({ setIsMenuOpen }) {
             prevX = e.touches[0].clientX
             prevY = e.touches[0].clientY
         }
+
         const onTouchMove = (e) => {
             if (!isDragging) return
             targetRotY += (e.touches[0].clientX - prevX) * 0.012
@@ -119,7 +120,10 @@ export default function HeroSection({ setIsMenuOpen }) {
             prevX = e.touches[0].clientX
             prevY = e.touches[0].clientY
         }
-        const onTouchEnd = () => { isDragging = false }
+
+        const onTouchEnd = () => {
+            isDragging = false
+        }
 
         mount.addEventListener('mousemove', onMouseMove)
         mount.addEventListener('touchstart', onTouchStart, { passive: true })
@@ -127,27 +131,39 @@ export default function HeroSection({ setIsMenuOpen }) {
         mount.addEventListener('touchend', onTouchEnd)
 
         const clock = new THREE.Clock()
+
         const animate = () => {
             animId = requestAnimationFrame(animate)
             const t = clock.getElapsedTime()
+
             if (beeRoot) {
                 rotY += (targetRotY - rotY) * 0.08
                 rotX += (targetRotX - rotX) * 0.08
+
                 beeRoot.rotation.y = Math.PI + rotY
                 beeRoot.rotation.x = rotX
                 beeRoot.position.y = Math.sin(t * 1.8) * 0.05
 
                 if (rightWing && rightWingBaseQ) {
-                    const flapQ = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.sin(t * 20) * 0.8)
+                    const flapQ = new THREE.Quaternion().setFromAxisAngle(
+                        new THREE.Vector3(0, 1, 0),
+                        Math.sin(t * 20) * 0.8
+                    )
                     rightWing.quaternion.multiplyQuaternions(rightWingBaseQ, flapQ)
                 }
+
                 if (leftWing && leftWingBaseQ) {
-                    const flapQ = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), -Math.sin(t * 20) * 0.8)
+                    const flapQ = new THREE.Quaternion().setFromAxisAngle(
+                        new THREE.Vector3(0, 1, 0),
+                        -Math.sin(t * 20) * 0.8
+                    )
                     leftWing.quaternion.multiplyQuaternions(leftWingBaseQ, flapQ)
                 }
             }
+
             renderer.render(scene, camera)
         }
+
         animate()
 
         const onResize = () => {
@@ -157,6 +173,7 @@ export default function HeroSection({ setIsMenuOpen }) {
             camera.updateProjectionMatrix()
             renderer.setSize(w2, h2)
         }
+
         window.addEventListener('resize', onResize)
 
         return () => {
@@ -167,36 +184,50 @@ export default function HeroSection({ setIsMenuOpen }) {
             mount.removeEventListener('touchmove', onTouchMove)
             mount.removeEventListener('touchend', onTouchEnd)
             renderer.dispose()
-            if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement)
+            if (mount.contains(renderer.domElement)) {
+                mount.removeChild(renderer.domElement)
+            }
         }
     }, [])
 
     return (
         <>
             <style>{`
-                @keyframes fadeUp {
-                    from { opacity: 0; transform: translateY(14px); }
-                    to   { opacity: 1; transform: translateY(0); }
-                }
-                @keyframes scrollBounce {
-                    0%, 100% { transform: translateY(0); }
-                    50%      { transform: translateY(6px); }
-                }
-                @keyframes cursorBlink {
-                    0%, 100% { opacity: 1; }
-                    50% { opacity: 0; }
-                }
-                .fade-a { opacity: 0; animation: fadeUp 0.55s ease-out 0.3s forwards; }
-                .fade-b { opacity: 0; animation: fadeUp 0.55s ease-out 0.45s forwards; }
-                .fade-c { opacity: 0; animation: fadeUp 0.55s ease-out 0.6s forwards; }
-                .fade-d { opacity: 0; animation: fadeUp 0.55s ease-out 0.6s forwards; }
-                .fade-e { opacity: 0; animation: fadeUp 0.55s ease-out 0.75s forwards; }
-                .scroll-bounce { animation: scrollBounce 1.8s ease-in-out infinite; }
-                .cursor { display: inline-block; width: 6px; height: 12px; background-color: white; margin-left: 2px; animation: cursorBlink 1s step-end infinite; vertical-align: middle; }
-            `}</style>
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(14px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scrollBounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(6px); }
+        }
+
+        @keyframes cursorBlink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
+
+        .fade-a { opacity: 0; animation: fadeUp 0.55s ease-out 0.3s forwards; }
+        .fade-b { opacity: 0; animation: fadeUp 0.55s ease-out 0.45s forwards; }
+        .fade-c { opacity: 0; animation: fadeUp 0.55s ease-out 0.6s forwards; }
+        .fade-d { opacity: 0; animation: fadeUp 0.55s ease-out 0.6s forwards; }
+        .fade-e { opacity: 0; animation: fadeUp 0.55s ease-out 0.75s forwards; }
+
+        .scroll-bounce { animation: scrollBounce 1.8s ease-in-out infinite; }
+
+        .cursor {
+          display: inline-block;
+          width: 6px;
+          height: 12px;
+          background-color: white;
+          margin-left: 2px;
+          animation: cursorBlink 1s step-end infinite;
+          vertical-align: middle;
+        }
+      `}</style>
 
             <section className="sticky top-0 z-0 bg-black w-full h-dvh overflow-hidden">
-
                 <div
                     ref={mountRef}
                     className="absolute inset-0 w-full h-full"
@@ -204,20 +235,24 @@ export default function HeroSection({ setIsMenuOpen }) {
                 />
 
                 <div className="absolute inset-0 z-10 flex flex-col justify-between p-4 sm:p-6 md:p-10 pointer-events-none">
-
                     <div className="flex justify-between items-start w-full pointer-events-auto">
                         <span className="fade-a text-white text-xs sm:text-sm tracking-widest uppercase">
                             LEIMXNSQUARE
                         </span>
+
                         <button
                             onClick={() => setIsMenuOpen(true)}
-                            className="fade-b text-white text-xs sm:text-sm tracking-widest uppercase hover:opacity-75 transition-opacity"
-                            style={{
-                                opacity: menuVisible ? 1 : 0,
-                                pointerEvents: menuVisible ? 'auto' : 'none',
-                                transform: menuVisible ? 'translateY(0)' : 'translateY(-12px)',
-                                transition: 'opacity 0.3s, transform 0.3s',
-                            }}
+                            className={`
+                fade-b
+                text-white text-xs sm:text-sm tracking-widest uppercase
+                transition-all duration-300 ease-out
+                hover:bg-white hover:text-black
+                hover:-translate-y-1
+                ${menuVisible
+                                    ? 'opacity-100 translate-y-0 pointer-events-auto'
+                                    : 'opacity-0 -translate-y-3 pointer-events-none'
+                                }
+              `}
                         >
                             MENU
                         </button>
@@ -235,9 +270,11 @@ export default function HeroSection({ setIsMenuOpen }) {
                                 <span className="cursor"></span>
                             </p>
                         </div>
+
                         <div className="fade-d text-right pointer-events-auto">
                             <p className="text-white text-[10px] sm:text-xs tracking-widest uppercase leading-loose">
-                                INSPIRED BY<br />
+                                INSPIRED BY
+                                <br />
                                 <a
                                     href="https://wildyriftian.com"
                                     target="_blank"
@@ -254,9 +291,10 @@ export default function HeroSection({ setIsMenuOpen }) {
                         <span className="text-white text-[10px] sm:text-xs tracking-widest uppercase">
                             SCROLL TO EXPLORE
                         </span>
-                        <span className="text-white text-sm scroll-bounce inline-block">↓</span>
+                        <span className="text-white text-sm scroll-bounce inline-block">
+                            ↓
+                        </span>
                     </div>
-
                 </div>
             </section>
         </>

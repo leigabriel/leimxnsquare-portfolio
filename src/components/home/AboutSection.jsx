@@ -96,7 +96,6 @@ export default function AboutSection({ navigate }) {
             <div className="flex-1 px-3 py-2 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 sm:gap-0">
                 <span>CURRENTLY BASED IN</span>
                 <span>ORIENTAL MINDORO, PH</span>
-                <span className="hidden sm:inline">14.2126° N, 121.1636° E</span>
             </div>
         </div>
     )
@@ -114,7 +113,6 @@ export default function AboutSection({ navigate }) {
             <div className="flex-1 px-3 py-2 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 sm:gap-0">
                 <span>CURRENTLY BASED IN</span>
                 <span>ORIENTAL MINDORO, PH</span>
-                <span className="hidden sm:inline">14.2126° N, 121.1636° E</span>
             </div>
         </div>
     )
@@ -154,13 +152,13 @@ export default function AboutSection({ navigate }) {
                     {face === FRONT ? (
                         <div className="w-full bg-[#FFEA00] flex flex-col border border-black shadow-2xl">
                             {headerRow('PROFILE IMAGE')}
-                            <div className="flex flex-col md:flex-row flex-1">
+                            <div className="flex flex-col-reverse md:flex-row flex-1">
                                 {sideDotsYellow()}
-                                <div className="w-full md:w-[35%] lg:w-[30%] border-b md:border-b-0 md:border-r border-black border-dotted relative min-h-40 sm:min-h-56 md:min-h-150 bg-[#FFEA00] flex items-center justify-center p-3 md:p-6">
+                                <div className="w-full md:w-[30%] lg:w-[30%] border-t md:border-t-0 md:border-r border-black border-dotted relative min-h-40 sm:min-h-56 md:min-h-120 bg-[#FFEA00] flex items-center justify-center p-3 md:p-6">
                                     <img
-                                        src="https://avatars.githubusercontent.com/u/223958636?v=4"
+                                        src="/bee.png"
                                         alt="Profile"
-                                        className="w-full h-full object-cover grayscale mix-blend-multiply"
+                                        className="w-full h-full md:h-auto md:aspect-square object-fill"
                                     />
                                 </div>
                                 <div className="w-full md:flex-1 flex flex-col relative">

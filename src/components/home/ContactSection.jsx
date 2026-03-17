@@ -1,70 +1,109 @@
+import { useEffect, useState } from 'react'
+
 export default function ContactSection({ navigate, setIsMenuOpen }) {
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
     const links = [
-        { label: 'Home', dest: 'home' },
-        { label: 'About', dest: 'about' },
-        { label: 'Works', dest: 'works' },
-        { label: 'Contact', dest: 'contact' },
+        { label: 'HOME', dest: 'home' },
+        { label: 'ABOUT', dest: 'about' },
+        { label: 'WORKS', dest: 'works' },
     ]
 
     return (
-        <section className="sticky top-0 z-30 bg-black w-full h-dvh flex flex-col overflow-hidden p-5 sm:p-8 md:p-10">
+        <section className="relative z-30 bg-black w-full min-h-screen flex flex-col justify-between overflow-hidden p-5 sm:p-8 md:p-12 lg:p-16 text-white">
+            <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:ital@0;1&display=swap');
+                
+                .font-serif-custom {
+                    font-family: 'Playfair Display', ui-serif, Georgia, serif;
+                }
 
-            <div className="flex justify-between items-center w-full">
-                <span className="text-white/30 text-[10px] sm:text-xs tracking-widest uppercase">
-                    LEIMXNSQUARE — ©2026
-                </span>
+                @keyframes revealUp {
+                    from { opacity: 0; transform: translateY(40px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+
+                .reveal-item {
+                    opacity: 0;
+                }
+
+                .mounted .reveal-item {
+                    animation: revealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                }
+
+                .link-item {
+                    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                                color 0.25s ease,
+                                text-shadow 0.25s ease;
+                    transform-origin: left center;
+                }
+
+                .link-item:hover {
+                    transform: translateX(18px) scale(1.03);
+                    color: #FFEA00;
+                    font-style: italic;
+                    text-shadow: 0 8px 24px rgba(255, 234, 0, 0.25);
+                }
+
+                @media (max-width: 768px) {
+                    .link-item:hover {
+                        transform: translateX(10px) scale(1.01);
+                    }
+                }
+            `}</style>
+
+            <div className={`flex flex-col md:flex-row w-full flex-1 relative z-10 ${mounted ? 'mounted' : ''}`}>
+                <nav className="flex flex-col justify-center items-start w-full md:w-1/2 z-20 mt-10 md:mt-0">
+                    {links.map(({ label, dest }, i) => (
+                        <button
+                            key={label}
+                            onClick={() => navigate(dest)}
+                            className="reveal-item link-item font-serif-custom text-[18vw] sm:text-[15vw] md:text-[11vw] lg:text-[10vw] leading-[0.8] tracking-tight uppercase m-0 p-0 text-left"
+                            style={{ animationDelay: `${i * 0.15}s` }}
+                        >
+                            {label}
+                        </button>
+                    ))}
+                </nav>
             </div>
 
-            <nav className="flex flex-col gap-0 flex-1 justify-center py-6 sm:py-8">
-                {links.map(({ label, dest }, i) => (
-                    <button
-                        key={label}
-                        onClick={() => navigate(dest)}
-                        className="flex items-center justify-between w-full border-b border-white/6 py-3 sm:py-4 px-2 sm:px-4 group hover:bg-[#FFEA00] transition-colors duration-200 text-left"
-                    >
-                        <span className="text-white/30 text-xs sm:text-sm tracking-widest group-hover:text-black transition-colors">
-                            0{i + 1}
-                        </span>
-                        <span className="text-white text-[8vw] sm:text-[7vw] md:text-[6.5vw] leading-none tracking-tight uppercase group-hover:text-black transition-colors">
-                            {label}
-                        </span>
-                        <span className="text-white/30 text-xs sm:text-sm group-hover:text-black transition-colors">→</span>
-                    </button>
-                ))}
-            </nav>
+            <div className={`flex flex-col w-full z-30 mt-20 md:mt-10 ${mounted ? 'mounted' : ''}`}>
+                <div
+                    className="reveal-item flex flex-col mb-2 sm:mb-4 relative z-30"
+                    style={{ animationDelay: '0.6s' }}
+                >
+                    <p className="text-[9px] sm:text-[10px] md:text-xs tracking-[0.2em] uppercase text-white/90">
+                        OPEN FOR COLLABORATIONS & FREELANCE WORK
+                    </p>
 
-            <div className="flex flex-col gap-3">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2 sm:gap-0">
-                    <div className="flex flex-col gap-0.5">
-                        <p className="text-white/30 text-[10px] sm:text-xs tracking-widest uppercase">
-                            OPEN FOR COLLABORATIONS & FREELANCE WORK
-                        </p>
-                        <a
-                            href="mailto:malibiranleigabriel@gmail.com"
-                            className="text-white/60 text-xs sm:text-sm tracking-widest uppercase hover:text-[#FFEA00] transition-colors"
-                        >
-                            MALIBIRANLEIGABRIEL@GMAIL.COM
-                        </a>
-                    </div>
+                    <a
+                        href="mailto:malibiranleigabriel@gmail.com"
+                        className="text-[9px] sm:text-[10px] md:text-xs tracking-[0.2em] lowercase text-blue-400 hover:text-[#FFEA00] transition-colors duration-300 w-fit cursor-pointer"
+                    >
+                        malibiranleigabriel@gmail.com
+                    </a>
                 </div>
 
-                <div className="w-full border-t border-white/6"></div>
-
-                <div className="-mx-5 sm:-mx-8 md:-mx-10">
+                <div
+                    className="reveal-item w-full -ml-1 sm:-ml-2"
+                    style={{ animationDelay: '0.7s' }}
+                >
                     <h1
-                        className="text-white/90 uppercase px-5 sm:px-8 md:px-10 leading-none"
+                        className="font-serif-custom uppercase text-white"
                         style={{
-                            fontSize: 'clamp(3.5rem, 13.5vw, 14rem)',
-                            letterSpacing: '-0.04em',
-                            fontWeight: 400,
-                            marginBottom: '-0.14em',
+                            fontSize: 'clamp(3rem, 13vw, 20rem)',
+                            lineHeight: '0.8',
+                            letterSpacing: '-0.02em',
                         }}
                     >
                         LEIMXNSQUARE
                     </h1>
                 </div>
             </div>
-
         </section>
     )
 }

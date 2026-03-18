@@ -2,20 +2,20 @@ import { useState } from 'react'
 
 const posterProjects = [
     { id: '01', title: 'Call Me', year: '2026', img: '/posters/callme.png' },
-    { id: '02', title: 'Evil J', year: '2026', img: '/posters/evilj.png' },
+    { id: '02', title: 'Evil Jordan', year: '2026', img: '/posters/evilj.png' },
     { id: '03', title: 'Giselle', year: '2026', img: '/posters/giselle.jpg' },
-    { id: '04', title: 'Jennie', year: '2026', img: '/posters/jennie.png' },
+    { id: '04', title: 'Like Jennie', year: '2026', img: '/posters/jennie.png' },
     { id: '05', title: 'Kanibalismo', year: '2026', img: '/posters/kanibalismo.png' },
     { id: '06', title: 'Multo', year: '2026', img: '/posters/multo.png' },
-    { id: '07', title: 'New J', year: '2026', img: '/posters/newj.png' },
-    { id: '08', title: 'Ning', year: '2026', img: '/posters/ning.png' },
+    { id: '07', title: 'New Jeans', year: '2026', img: '/posters/newj.png' },
+    { id: '08', title: 'Heaven Sent', year: '2026', img: '/posters/ning.png' },
     { id: '09', title: 'Perception', year: '2026', img: '/posters/perception.png' },
     { id: '10', title: 'Pusa', year: '2026', img: '/posters/pusa.png' },
     { id: '11', title: 'Rockstar', year: '2026', img: '/posters/rockstar.png' },
-    { id: '12', title: 'Thea', year: '2026', img: '/posters/thea.png' },
+    { id: '12', title: 'One of the Girls', year: '2026', img: '/posters/thea.png' },
     { id: '13', title: 'Vintage', year: '2026', img: '/posters/vintage.png' },
-    { id: '14', title: 'Yunjin', year: '2026', img: '/posters/yunjin.png' },
-    { id: '15', title: 'Yunjin 2', year: '2026', img: '/posters/yunjin2.png' },
+    { id: '14', title: 'Die for you', year: '2026', img: '/posters/yunjin.png' },
+    { id: '15', title: 'The Beauty Queen Yunjin', year: '2026', img: '/posters/yunjin2.png' },
 ]
 
 const webProjects = [
@@ -29,7 +29,7 @@ export default function Works({ setIsMenuOpen, navigate }) {
     const handleTabClick = (index) => {
         const isOpening = activeTab !== index
         if (isOpening) {
-            const audio = new Audio('/folder.mp3')
+            const audio = new Audio('/sounds/folder.mp3')
             audio.volume = 0.5
             audio.play().catch(() => { })
         }
@@ -38,10 +38,16 @@ export default function Works({ setIsMenuOpen, navigate }) {
 
     return (
         <main className="bg-white min-h-screen text-black flex flex-col overflow-x-hidden selection:bg-black selection:text-white">
-
             <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+                @font-face {
+                    font-family: 'SimSunCustom';
+                    src: url('/simsunb.ttf') format('truetype');
+                    font-weight: normal;
+                    font-style: normal;
+                    font-display: swap;
+                }
 
+                .font-simsun { font-family: 'SimSunCustom', serif; }
                 .font-times { font-family: "Times New Roman", Times, serif; }
 
                 .folder-tab {
@@ -120,11 +126,12 @@ export default function Works({ setIsMenuOpen, navigate }) {
                     from { opacity: 0; transform: scale(0.96) translateY(10px); }
                     to   { opacity: 1; transform: scale(1) translateY(0); }
                 }
+
                 .modal-panel { animation: modalIn 0.22s ease-out forwards; }
             `}</style>
 
             <div className="flex justify-between items-start px-6 md:px-12 pt-8 pb-12">
-                <h1 className="font-times text-4xl sm:text-6xl md:text-[8vw] leading-none">
+                <h1 className="font-simsun text-4xl sm:text-6xl md:text-[8vw] leading-none">
                     Works
                 </h1>
                 <button
@@ -137,14 +144,10 @@ export default function Works({ setIsMenuOpen, navigate }) {
 
             <div className="w-full text-black mt-auto flex flex-col pt-12">
 
-                {/* Tab 1 — Web Projects */}
                 <div className={`folder-tab bg-[#212121] w-full relative z-10 ${activeTab === 0 ? 'drop-shadow-2xl' : ''}`}>
-                    <button
-                        onClick={() => handleTabClick(0)}
-                        className="tab-btn w-full group h-16 md:h-20 flex flex-col justify-end text-left"
-                    >
+                    <button onClick={() => handleTabClick(0)} className="tab-btn w-full group h-16 md:h-20 flex flex-col justify-end text-left">
                         <div className="pb-3 md:pb-4">
-                            <h2 className="font-times pl-6 md:pl-12 text-3xl md:text-5xl text-white transition-all duration-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-4">
+                            <h2 className="font-simsun pl-6 md:pl-12 text-2xl md:text-4xl text-white transition-all duration-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-4">
                                 01 Web Projects
                             </h2>
                         </div>
@@ -198,14 +201,10 @@ export default function Works({ setIsMenuOpen, navigate }) {
                     <div className="h-16 md:h-20"></div>
                 </div>
 
-                {/* Tab 2 — Poster Design */}
                 <div className={`folder-tab bg-[#ffff00] w-full relative z-20 -mt-16 md:-mt-20 ${activeTab === 1 ? 'drop-shadow-2xl' : ''}`}>
-                    <button
-                        onClick={() => handleTabClick(1)}
-                        className="tab-btn w-full group h-16 md:h-20 flex flex-col justify-end text-left"
-                    >
+                    <button onClick={() => handleTabClick(1)} className="tab-btn w-full group h-16 md:h-20 flex flex-col justify-end text-left">
                         <div className="pb-3 md:pb-4">
-                            <h2 className="font-times pl-6 md:pl-12 text-3xl md:text-5xl transition-all duration-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-4">
+                            <h2 className="font-simsun pl-6 md:pl-12 text-2xl md:text-4xl transition-all duration-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-4">
                                 02 Poster Design
                             </h2>
                         </div>

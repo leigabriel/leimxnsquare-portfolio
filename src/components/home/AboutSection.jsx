@@ -11,7 +11,7 @@ export function VideoSection() {
                     loop
                     playsInline
                 >
-                    <source src="STG_flash.mp4" type="video/mp4" />
+                    <source src="flash.mp4" type="video/mp4" />
                 </video>
             </div>
         </section>
@@ -139,6 +139,19 @@ export default function AboutSection({ navigate }) {
         <section className="sticky top-0 z-20 bg-zinc-500 w-full min-h-screen flex items-center justify-center p-2 sm:p-6 md:p-12 text-black overflow-hidden">
             <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500&display=swap');
+
+                @font-face {
+                    font-family: 'SimSunCustom';
+                    src: url('/simsunb.ttf') format('truetype');
+                    font-weight: normal;
+                    font-style: normal;
+                    font-display: swap;
+                }
+
+                .font-simsun {
+                    font-family: 'SimSunCustom', serif;
+                }
+
                 .about-card-scene { perspective: 1200px; }
                 .about-card-inner { transform-origin: center center; }
             `}</style>
@@ -163,8 +176,8 @@ export default function AboutSection({ navigate }) {
                                 </div>
                                 <div className="w-full md:flex-1 flex flex-col relative">
                                     <div className="p-3 sm:p-5 md:p-10 lg:p-12 pb-3 md:pb-6 border-b border-black border-dotted">
-                                        <h2 className="text-3xl sm:text-4xl md:text-7xl lg:text-8xl xl:text-[7.5rem] font-serif leading-[0.9] tracking-tight">
-                                            Leimxnsquare
+                                        <h2 className="font-simsun text-3xl sm:text-4xl md:text-7xl lg:text-8xl xl:text-[7.5rem] leading-[0.9] tracking-tight">
+                                            leimxnsquare
                                         </h2>
                                     </div>
                                     <div className="p-3 sm:p-5 md:p-10 lg:p-12 flex-1 flex flex-col justify-center relative pr-10 sm:pr-12 lg:pr-24">

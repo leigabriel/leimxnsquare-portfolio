@@ -2,25 +2,6 @@ import { useEffect, useState, useRef, useCallback } from 'react'
 
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789*#@!'
 
-function playSound(type) {
-    try {
-        if (type === 'open') {
-            const a = new Audio('/menuopen.mp3')
-            a.volume = 1.0
-            a.play().catch(() => { })
-        } else if (type === 'close') {
-            const a = new Audio('/menuclose.mp3')
-            a.volume = 1.0
-            a.play().catch(() => { })
-        } else if (type === 'nav') {
-            const a = new Audio('/menuopen.mp3')
-            a.volume = 0.45
-            a.playbackRate = 1.6
-            a.play().catch(() => { })
-        }
-    } catch (_) { }
-}
-
 function ScrambleLink({ label, onClick }) {
     const [display, setDisplay] = useState(label)
     const [hovered, setHovered] = useState(false)
@@ -69,7 +50,7 @@ function ScrambleLink({ label, onClick }) {
             style={{ background: 'none', border: 'none', padding: 0 }}
         >
             <span
-                className="cursor-pointer"
+                className="cursor-pointer font-simsun"
                 style={{
                     display: 'block',
                     fontSize: 'clamp(3rem, 10vw, 6rem)',
@@ -129,7 +110,6 @@ function ScrambleLink({ label, onClick }) {
 
 export function MenuButton({ setIsMenuOpen, className = '', style = {} }) {
     const handleOpen = useCallback(() => {
-        playSound('open')
         setIsMenuOpen(true)
     }, [setIsMenuOpen])
 
@@ -148,13 +128,11 @@ export default function Menu({ setIsMenuOpen, navigate }) {
     const [closing, setClosing] = useState(false)
 
     const close = useCallback(() => {
-        playSound('close')
         setClosing(true)
         setTimeout(() => setIsMenuOpen(false), 400)
     }, [setIsMenuOpen])
 
     const handleNav = useCallback((dest) => {
-        playSound('nav')
         setClosing(true)
         setTimeout(() => navigate(dest), 400)
     }, [navigate])
@@ -169,6 +147,18 @@ export default function Menu({ setIsMenuOpen, navigate }) {
     return (
         <>
             <style>{`
+                @font-face {
+                    font-family: 'SimSunCustom';
+                    src: url('/simsunb.ttf') format('truetype');
+                    font-weight: normal;
+                    font-style: normal;
+                    font-display: swap;
+                }
+
+                .font-simsun {
+                    font-family: 'SimSunCustom', serif;
+                }
+
                 @keyframes menuOverlayIn  { from { opacity: 0; } to { opacity: 1; } }
                 @keyframes menuOverlayOut { from { opacity: 1; } to { opacity: 0; } }
                 @keyframes menuPanelIn    { from { transform: translateY(-100%); } to { transform: translateY(0); } }

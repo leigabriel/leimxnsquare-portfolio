@@ -188,7 +188,7 @@ export default function FeaturedSection({ navigate }) {
                     style={{
                         backdropFilter: 'blur(32px) saturate(1.2)',
                         WebkitBackdropFilter: 'blur(32px) saturate(1.2)',
-                        background: 'rgba(0,0,0,0.35)',
+                        background: 'rgba(0, 0, 0, 0, 10)',
                     }}
                 >
                     <div className="px-5 sm:px-8 md:px-12 lg:px-16 mb-6 flex items-end justify-between w-full max-w-[100vw]">
@@ -240,13 +240,16 @@ const FolderCard = forwardRef(function FolderCard({ work, onClick }, ref) {
     return (
         <div
             ref={ref}
-            className="shrink-0 flex flex-col cursor-pointer transition-shadow duration-300"
+            className="shrink-0 flex flex-col cursor-pointer"
             onClick={onClick}
             style={{
                 width: `${CARD_W}px`,
                 transformOrigin: 'bottom center',
                 willChange: 'transform, opacity',
                 opacity: 0,
+                isolation: 'isolate',
+                position: 'relative',
+                zIndex: 1,
             }}
         >
             <div
@@ -260,12 +263,13 @@ const FolderCard = forwardRef(function FolderCard({ work, onClick }, ref) {
                     paddingLeft: '14px',
                     paddingRight: '14px',
                     width: '70%',
+                    flexShrink: 0,
                 }}
             >
-                <span style={{ fontSize: '9px', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, color: work.accent, opacity: 0.75 }}>
+                <span style={{ fontSize: '9px', fontFamily: "'JetBrains Mono', monospace", letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, color: work.accent, opacity: 0.75 }}>
                     {work.index}
                 </span>
-                <span style={{ fontSize: '9px', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, color: work.accent, opacity: 0.6 }}>
+                <span style={{ fontSize: '9px', fontFamily: "'JetBrains Mono', monospace", letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, color: work.accent, opacity: 0.6 }}>
                     {work.category}
                 </span>
             </div>
@@ -281,35 +285,36 @@ const FolderCard = forwardRef(function FolderCard({ work, onClick }, ref) {
                     padding: '20px',
                     position: 'relative',
                     overflow: 'hidden',
-                    border: `1px solid ${work.isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.07)'}`,
+                    border: `1px solid ${work.isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)'}`,
                     borderTop: 'none',
+                    boxSizing: 'border-box',
                 }}
             >
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: work.tabBg }} />
 
                 <div className="flex justify-between items-start mb-4">
                     <div>
-                        <div style={{ fontSize: 'clamp(1.3rem, 2.5vw, 1.9rem)', fontFamily: 'ui-serif, Georgia, serif', lineHeight: 1.05, letterSpacing: '-0.02em', color: textColor }}>
+                        <div style={{ fontSize: 'clamp(1.3rem, 2.5vw, 1.9rem)', fontFamily: "'SimSun-ExtB', 'SimSun', 'STSong', serif", lineHeight: 1.05, letterSpacing: '-0.02em', color: textColor }}>
                             {work.title}
                         </div>
-                        <div style={{ fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: textColor, opacity: 0.5, marginTop: '4px' }}>
+                        <div style={{ fontSize: '9px', fontFamily: "'JetBrains Mono', monospace", letterSpacing: '0.2em', textTransform: 'uppercase', color: textColor, opacity: 0.5, marginTop: '4px' }}>
                             {work.subtitle}
                         </div>
                     </div>
-                    <span style={{ fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: textColor, opacity: 0.35, marginTop: '4px', flexShrink: 0 }}>
+                    <span style={{ fontSize: '9px', fontFamily: "'JetBrains Mono', monospace", letterSpacing: '0.2em', textTransform: 'uppercase', color: textColor, opacity: 0.35, marginTop: '4px', flexShrink: 0 }}>
                         {work.year}
                     </span>
                 </div>
 
-                <div style={{ flex: 1, borderRadius: '8px', overflow: 'hidden', background: work.isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.06)', minHeight: 0 }}>
+                <div style={{ flex: 1, borderRadius: '6px', overflow: 'hidden', background: work.isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.06)', minHeight: 0 }}>
                     <img src={work.image} alt={work.imageAlt} className="w-full h-full object-cover block" loading="lazy" />
                 </div>
 
                 <div className="mt-4 flex items-end justify-between gap-3">
-                    <p className="line-clamp-2 sm:line-clamp-3" style={{ fontSize: '9px', lineHeight: 1.7, letterSpacing: '0.13em', textTransform: 'uppercase', color: textColor, opacity: 0.5, margin: 0 }}>
+                    <p className="line-clamp-2" style={{ fontSize: '9px', fontFamily: "'JetBrains Mono', monospace", lineHeight: 1.7, letterSpacing: '0.1em', textTransform: 'uppercase', color: textColor, opacity: 0.45, margin: 0 }}>
                         {work.description}
                     </p>
-                    <span style={{ fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: textColor, opacity: 0.4, flexShrink: 0 }}>
+                    <span style={{ fontSize: '9px', fontFamily: "'JetBrains Mono', monospace", letterSpacing: '0.2em', textTransform: 'uppercase', color: textColor, opacity: 0.4, flexShrink: 0 }}>
                         Open ↗
                     </span>
                 </div>
@@ -319,26 +324,30 @@ const FolderCard = forwardRef(function FolderCard({ work, onClick }, ref) {
 })
 
 function WorkModal({ work, onClose }) {
-    const textColor = work.isDark ? '#f0f0f0' : work.accent
     const overlayRef = useRef(null)
     const panelRef = useRef(null)
+    const [showPreview, setShowPreview] = useState(false)
+    const accent = work.accent || '#1a1400'
+    const bg = work.bodyBg || '#FFEA00'
+    const yr = (work.year || '2026').slice(-2)
 
     useEffect(() => {
-        const timer = requestAnimationFrame(() => {
+        const id = requestAnimationFrame(() => {
             if (overlayRef.current) overlayRef.current.style.opacity = '1'
             if (panelRef.current) {
                 panelRef.current.style.opacity = '1'
-                panelRef.current.style.transform = 'translateY(0) scale(1)'
+                panelRef.current.style.transform = 'scale(1)'
             }
         })
-        return () => cancelAnimationFrame(timer)
+        return () => cancelAnimationFrame(id)
     }, [])
 
     const handleClose = () => {
+        if (showPreview) { setShowPreview(false); return }
         if (overlayRef.current) overlayRef.current.style.opacity = '0'
         if (panelRef.current) {
             panelRef.current.style.opacity = '0'
-            panelRef.current.style.transform = 'translateY(20px) scale(0.97)'
+            panelRef.current.style.transform = 'scale(0.96)'
         }
         setTimeout(onClose, 300)
     }
@@ -347,134 +356,146 @@ function WorkModal({ work, onClose }) {
         <div
             ref={overlayRef}
             onClick={handleClose}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-12 opacity-0 transition-opacity duration-300"
+            className="fixed inset-0 z-50 flex items-center justify-center"
             style={{
-                background: 'rgba(0,0,0,0.7)',
-                backdropFilter: 'blur(18px)',
-                WebkitBackdropFilter: 'blur(18px)',
+                padding: 'clamp(12px, 4vw, 40px)',
+                background: 'rgba(0,0,0,0.85)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                opacity: 0,
+                transition: 'opacity 0.3s ease',
             }}
         >
-            <div
-                ref={panelRef}
-                onClick={e => e.stopPropagation()}
-                className="w-full max-w-5xl max-h-[90vh] sm:max-h-[85vh] rounded-2xl overflow-hidden flex flex-col opacity-0 transition-all duration-300"
-                style={{
-                    background: work.bodyBg,
-                    transform: 'translateY(24px) scale(0.97)',
-                    border: `1px solid ${work.isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
-                }}
-            >
+            <style>{`
+                @font-face {
+                    font-family: 'SimSun-ExtB';
+                    src: url('/simsunb.ttf') format('truetype');
+                    font-weight: normal;
+                    font-style: normal;
+                }
+                .f-mono { font-family: 'JetBrains Mono', monospace; }
+                .f-serif { font-family: 'SimSun-ExtB', 'SimSun', 'STSong', serif; }
+                .no-scroll::-webkit-scrollbar { display: none; }
+                .poster-border { border: 1.5px dashed; border-radius: 0; }
+                .inner-dash { border: none; border-top: 1.5px dashed; margin: 0; }
+                .preview-btn:hover { opacity: 1 !important; }
+            `}</style>
+
+            {showPreview && (
                 <div
-                    className="flex items-center justify-between px-4 sm:px-6 py-4 shrink-0"
-                    style={{
-                        background: work.tabBg,
-                        borderBottom: `1px solid ${work.isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.07)'}`,
-                    }}
+                    className="fixed inset-0 z-60 flex items-center justify-center"
+                    style={{ background: 'rgba(0,0,0,0.95)', padding: 'clamp(12px, 4vw, 40px)' }}
+                    onClick={() => setShowPreview(false)}
                 >
-                    <div className="flex items-center gap-3 sm:gap-4">
-                        <span style={{ fontSize: '9px', letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, color: work.accent, opacity: 0.6 }}>
-                            {work.index}
-                        </span>
-                        <span style={{ fontSize: '9px', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, color: work.accent, opacity: 0.5 }}>
-                            {work.category}
-                        </span>
-                        <span className="hidden sm:inline" style={{ fontSize: '9px', letterSpacing: '0.18em', textTransform: 'uppercase', color: work.accent, opacity: 0.35 }}>
-                            {work.year}
-                        </span>
-                    </div>
+                    <img
+                        src={work.image}
+                        alt={work.imageAlt}
+                        onClick={e => e.stopPropagation()}
+                        className="block"
+                        style={{ maxWidth: '100%', maxHeight: '90vh', objectFit: 'contain' }}
+                    />
                     <button
-                        onClick={handleClose}
-                        className="bg-transparent border-none cursor-pointer p-1 sm:px-2 py-1 transition-opacity hover:opacity-100"
-                        style={{
-                            fontSize: '11px',
-                            letterSpacing: '0.2em',
-                            textTransform: 'uppercase',
-                            color: work.accent,
-                            opacity: 0.5,
-                        }}
+                        onClick={() => setShowPreview(false)}
+                        className="f-mono absolute top-5 right-5 bg-transparent border-none cursor-pointer text-white text-[10px] tracking-[0.2em] uppercase"
+                        style={{ opacity: 0.6 }}
                     >
-                        Close ✕
+                        CLOSE
                     </button>
                 </div>
+            )}
 
-                <div className="flex flex-col md:flex-row flex-1 overflow-hidden min-h-0">
-                    <div className="w-full md:w-[60%] lg:w-[65%] h-[40vh] md:h-auto shrink-0 md:shrink overflow-hidden relative">
-                        <img
-                            src={work.image}
-                            alt={work.imageAlt}
-                            className="w-full h-full object-cover block"
-                            loading="lazy"
-                        />
+            <div
+                onClick={e => e.stopPropagation()}
+                className="relative w-full"
+                style={{ maxWidth: '480px' }}
+            >
+                <span className="absolute rounded-full pointer-events-none z-20" style={{ width: 11, height: 11, top: -5.5, left: -5.5, background: bg, border: `2px solid ${accent}` }} />
+                <span className="absolute rounded-full pointer-events-none z-20" style={{ width: 11, height: 11, top: -5.5, right: -5.5, background: bg, border: `2px solid ${accent}` }} />
+                <span className="absolute rounded-full pointer-events-none z-20" style={{ width: 11, height: 11, bottom: -5.5, left: -5.5, background: bg, border: `2px solid ${accent}` }} />
+                <span className="absolute rounded-full pointer-events-none z-20" style={{ width: 11, height: 11, bottom: -5.5, right: -5.5, background: bg, border: `2px solid ${accent}` }} />
+
+                <div
+                    ref={panelRef}
+                    className="no-scroll poster-border w-full flex flex-col"
+                    style={{
+                        background: bg,
+                        borderColor: accent,
+                        maxHeight: '94vh',
+                        overflowY: 'auto',
+                        overflowX: 'hidden',
+                        scrollbarWidth: 'none',
+                        opacity: 0,
+                        transform: 'scale(0.96)',
+                        transition: 'opacity 0.3s ease, transform 0.35s cubic-bezier(0.16,1,0.3,1)',
+                    }}
+                >
+                    <div className="f-mono flex items-center justify-between px-5 pt-5 pb-1" style={{ color: accent }}>
+                        <span className="text-[10px] tracking-[0.2em] uppercase">{work.category}</span>
+                        <button
+                            onClick={handleClose}
+                            className="f-mono bg-transparent border-none cursor-pointer p-0 text-[10px] tracking-[0.2em] uppercase"
+                            style={{ color: accent, opacity: 0.55 }}
+                        >
+                            CLOSE
+                        </button>
                     </div>
 
                     <div
-                        className="w-full md:w-[40%] lg:w-[35%] shrink-0 flex flex-col justify-between overflow-y-auto"
-                        style={{
-                            padding: 'clamp(1.5rem, 4vw, 2.5rem)',
-                            borderLeft: `1px solid ${work.isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.07)'}`,
-                        }}
+                        className="f-serif px-4 pb-3 uppercase w-full"
+                        style={{ fontSize: 'clamp(1.7rem, 6.5vw, 3.2rem)', color: accent, lineHeight: 0.9, letterSpacing: '-0.01em' }}
                     >
-                        <div>
-                            <div style={{
-                                fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)',
-                                fontFamily: 'ui-serif, Georgia, serif',
-                                lineHeight: 1.0,
-                                letterSpacing: '-0.02em',
-                                color: textColor,
-                                marginBottom: '8px',
-                            }}>
-                                {work.title}
-                            </div>
-                            <div style={{ fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', color: textColor, opacity: 0.45, marginBottom: '24px' }}>
-                                {work.subtitle}
-                            </div>
+                        {work.title} BY {work.subtitle}
+                    </div>
 
-                            <div style={{ width: '100%', height: '1px', background: work.isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)', marginBottom: '20px' }} />
+                    <div className="inner-dash w-full" style={{ borderColor: accent, opacity: 0.4 }} />
 
-                            <p style={{
-                                fontSize: '11px',
-                                lineHeight: 1.85,
-                                letterSpacing: '0.1em',
-                                textTransform: 'uppercase',
-                                color: textColor,
-                                opacity: 0.6,
-                                margin: 0,
-                            }}>
-                                {work.description}
-                            </p>
-                        </div>
+                    <div className="inner-dash w-full" style={{ borderColor: accent, opacity: 0.4 }} />
 
-                        <div className="mt-8 pt-6">
-                            <div style={{ width: '100%', height: '1px', background: work.isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)', marginBottom: '16px' }} />
-                            {work.link ? (
+                    <div className="px-4 py-3">
+                        <p
+                            className="f-mono m-0 uppercase"
+                            style={{
+                                fontSize: 'clamp(0.55rem, 1.2vw, 0.72rem)',
+                                color: accent,
+                                lineHeight: 1.9,
+                                letterSpacing: '0.07em',
+                                textAlign: 'justify',
+                                opacity: 0.8,
+                            }}
+                        >
+                            {work.description}
+                        </p>
+                    </div>
+
+                    <div className="inner-dash w-full" style={{ borderColor: accent, opacity: 0.4 }} />
+
+                    <div className="f-mono flex items-center justify-between px-5 py-3" style={{ color: accent }}>
+                        <span className="text-[11px] tracking-[0.15em] uppercase font-bold">LEIMXNSQUARE</span>
+                        <div className="flex items-center gap-3">
+                            <button
+                                onClick={() => setShowPreview(true)}
+                                className="f-mono text-[10px] tracking-[0.18em] uppercase px-3 py-1 bg-transparent cursor-pointer"
+                                style={{ color: accent, border: `1px solid ${accent}`, opacity: 0.75, transition: 'opacity 0.2s ease' }}
+                                onMouseEnter={e => e.currentTarget.style.opacity = '1'}
+                                onMouseLeave={e => e.currentTarget.style.opacity = '0.75'}
+                            >
+                                PREVIEW ↗
+                            </button>
+                            {work.link && (
                                 <a
                                     href={work.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="block w-full text-center transition-all duration-300 hover:opacity-100"
-                                    style={{
-                                        fontSize: '10px',
-                                        letterSpacing: '0.22em',
-                                        textTransform: 'uppercase',
-                                        fontWeight: 600,
-                                        color: textColor,
-                                        textDecoration: 'none',
-                                        opacity: 0.85,
-                                        padding: '12px 16px',
-                                        border: `1px solid ${work.isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'}`,
-                                        borderRadius: '8px',
-                                    }}
+                                    className="f-mono text-[10px] tracking-[0.18em] uppercase px-3 py-1"
+                                    style={{ color: accent, border: `1px solid ${accent}`, opacity: 0.8, textDecoration: 'none' }}
                                 >
-                                    View Project →
+                                    VISIT ↗
                                 </a>
-                            ) : (
-                                <div className="text-center w-full" style={{ padding: '12px 16px' }}>
-                                    <span style={{ fontSize: '9px', letterSpacing: '0.18em', textTransform: 'uppercase', color: textColor, opacity: 0.3 }}>
-                                        Not yet published
-                                    </span>
-                                </div>
                             )}
                         </div>
+                        {!work.link && (
+                            <span className="text-[11px] tracking-[0.15em] uppercase font-bold">{work.year}</span>
+                        )}
                     </div>
                 </div>
             </div>

@@ -53,7 +53,7 @@ const WORKS = [
         id: 'f04',
         index: '04',
         title: 'Bulusan Zoo',
-        subtitle: 'Wildlife Platform',
+        subtitle: 'Web App',
         year: '2026',
         category: 'Web Dev',
         description: 'ML-powered animal classification bridging data science with modern UX. A full wildlife web platform for Bulusan Zoo, Calapan City.',
@@ -444,7 +444,7 @@ function WorkModal({ work, onClose }) {
                         className="f-serif px-4 pb-3 uppercase w-full"
                         style={{ fontSize: 'clamp(1.7rem, 6.5vw, 3.2rem)', color: accent, lineHeight: 0.9, letterSpacing: '-0.01em' }}
                     >
-                        {work.title} BY {work.subtitle}
+                        {work.title} - {work.subtitle}
                     </div>
 
                     <div className="inner-dash w-full" style={{ borderColor: accent, opacity: 0.4 }} />

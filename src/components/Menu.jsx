@@ -1,6 +1,25 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789*#@!'
+
+function playSound(type) {
+    try {
+        if (type === 'open') {
+            const a = new Audio('/menuopen.mp3')
+            a.volume = 1.0
+            a.play().catch(() => { })
+        } else if (type === 'close') {
+            const a = new Audio('/menuclose.mp3')
+            a.volume = 1.0
+            a.play().catch(() => { })
+        } else if (type === 'nav') {
+            const a = new Audio('/menuopen.mp3')
+            a.volume = 0.45
+            a.playbackRate = 1.6
+            a.play().catch(() => { })
+        }
+    } catch (_) { }
+}
 
 function ScrambleLink({ label, onClick }) {
     const [display, setDisplay] = useState(label)
@@ -19,17 +38,11 @@ function ScrambleLink({ label, onClick }) {
             iterRef.current++
             const progress = iterRef.current / maxIter
             const resolved = Math.floor(progress * total)
-
             const next = labelUpper
                 .split('')
-                .map((char, i) => {
-                    if (i < resolved) return char
-                    return CHARS[Math.floor(Math.random() * CHARS.length)]
-                })
+                .map((char, i) => i < resolved ? char : CHARS[Math.floor(Math.random() * CHARS.length)])
                 .join('')
-
             setDisplay(next)
-
             if (iterRef.current < maxIter) {
                 frameRef.current = requestAnimationFrame(step)
             } else {
@@ -73,7 +86,6 @@ function ScrambleLink({ label, onClick }) {
                 }}
             >
                 <span
-                    className="cursor-pointer"
                     style={{
                         display: 'inline-block',
                         transform: hovered ? 'translateX(8px)' : 'translateX(0)',
@@ -115,23 +127,37 @@ function ScrambleLink({ label, onClick }) {
     )
 }
 
+export function MenuButton({ setIsMenuOpen, className = '', style = {} }) {
+    const handleOpen = useCallback(() => {
+        playSound('open')
+        setIsMenuOpen(true)
+    }, [setIsMenuOpen])
+
+    return (
+        <button
+            onClick={handleOpen}
+            className={`text-white text-xs sm:text-sm tracking-widest uppercase cursor-pointer transition-all duration-300 ease-out hover:bg-white hover:text-black hover:-translate-y-1 ${className}`}
+            style={style}
+        >
+            MENU
+        </button>
+    )
+}
+
 export default function Menu({ setIsMenuOpen, navigate }) {
-    const [visible, setVisible] = useState(false)
     const [closing, setClosing] = useState(false)
 
-    useEffect(() => {
-        requestAnimationFrame(() => setVisible(true))
-    }, [])
-
-    const close = () => {
+    const close = useCallback(() => {
+        playSound('close')
         setClosing(true)
         setTimeout(() => setIsMenuOpen(false), 400)
-    }
+    }, [setIsMenuOpen])
 
-    const handleNav = (dest) => {
+    const handleNav = useCallback((dest) => {
+        playSound('nav')
         setClosing(true)
         setTimeout(() => navigate(dest), 400)
-    }
+    }, [navigate])
 
     const links = [
         { label: 'Home', dest: 'home' },
@@ -173,7 +199,7 @@ export default function Menu({ setIsMenuOpen, navigate }) {
             `}</style>
 
             <div
-                className={`menu-overlay fixed inset-0 z-60 bg-black/20 cursor-pointer ${closing ? ' out' : ''}`}
+                className={`menu-overlay fixed inset-0 z-60 bg-black/20 cursor-pointer${closing ? ' out' : ''}`}
                 onClick={close}
             />
 
@@ -183,12 +209,7 @@ export default function Menu({ setIsMenuOpen, navigate }) {
                     <span className="text-black text-xs tracking-widest uppercase">LEIMXNSQUARE</span>
                     <button
                         onClick={close}
-                        className={`
-                            text-black text-xs tracking-widest uppercase cursor-pointer
-                            transition-all duration-300 ease-out
-                            hover:bg-white hover:text-black
-                            hover:-translate-y-1
-                        `}
+                        className="text-black text-xs tracking-widest uppercase cursor-pointer transition-all duration-300 ease-out hover:bg-white hover:text-black hover:-translate-y-1"
                     >
                         CLOSE
                     </button>

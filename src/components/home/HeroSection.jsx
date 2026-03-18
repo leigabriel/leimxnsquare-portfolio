@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+import { MenuButton } from '../Menu'
 
 export default function HeroSection({ setIsMenuOpen }) {
     const mountRef = useRef(null)
@@ -481,12 +482,10 @@ export default function HeroSection({ setIsMenuOpen }) {
                             LEIMXNSQUARE
                         </span>
 
-                        <button
-                            onClick={() => setIsMenuOpen(true)}
-                            className={`fade-b text-white text-xs sm:text-sm tracking-widest uppercase cursor-pointer transition-all duration-300 ease-out hover:bg-white hover:text-black hover:-translate-y-1 ${menuVisible ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-3 pointer-events-none'}`}
-                        >
-                            MENU
-                        </button>
+                        <MenuButton
+                            setIsMenuOpen={setIsMenuOpen}
+                            className={`fade-b ${menuVisible ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-3 pointer-events-none'}`}
+                        />
                     </div>
 
                     <div className="flex justify-between items-center w-full">

@@ -7,6 +7,8 @@ export default function HeroSection({ setIsMenuOpen }) {
     const lastYRef = useRef(0)
     const isHoveringBee = useRef(false)
     const cursorPos = useRef({ x: 0, y: 0 })
+    const buzzRef = useRef(null)
+    const buzzFadeRef = useRef(null)
     const [menuVisible, setMenuVisible] = useState(true)
     const [typedText, setTypedText] = useState('')
     const [hearts, setHearts] = useState([])
@@ -39,6 +41,11 @@ export default function HeroSection({ setIsMenuOpen }) {
 
         const w = mount.clientWidth
         const h = mount.clientHeight
+
+        const buzz = new Audio('/beesound.mp3')
+        buzz.loop = true
+        buzz.volume = 0
+        buzzRef.current = buzz
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
         renderer.setSize(w, h)
@@ -129,6 +136,45 @@ export default function HeroSection({ setIsMenuOpen }) {
 
         const raycaster = new THREE.Raycaster()
         const mouse = new THREE.Vector2()
+
+        const startBuzz = () => {
+            const audio = buzzRef.current
+            if (!audio || !audio.paused) return
+            audio.volume = 0
+            audio.play().catch(() => { })
+            clearInterval(buzzFadeRef.current)
+            buzzFadeRef.current = setInterval(() => {
+                if (audio.volume < 0.45) {
+                    audio.volume = Math.min(0.45, audio.volume + 0.02)
+                } else {
+                    clearInterval(buzzFadeRef.current)
+                }
+            }, 30)
+        }
+
+        const onFirstInteraction = () => {
+            startBuzz()
+            window.removeEventListener('click', onFirstInteraction)
+            window.removeEventListener('touchstart', onFirstInteraction)
+            window.removeEventListener('keydown', onFirstInteraction)
+            window.removeEventListener('scroll', onFirstInteraction)
+        }
+
+        window.addEventListener('click', onFirstInteraction, { once: true })
+        window.addEventListener('touchstart', onFirstInteraction, { once: true })
+        window.addEventListener('keydown', onFirstInteraction, { once: true })
+        window.addEventListener('scroll', onFirstInteraction, { once: true, passive: true })
+
+        const updateBuzzVolume = () => {
+            const audio = buzzRef.current
+            if (!audio || audio.paused) return
+            const sectionH = mount.clientHeight
+            const scrollY = window.scrollY
+            const ratio = Math.max(0, 1 - scrollY / sectionH)
+            audio.volume = ratio * 0.45
+        }
+
+        window.addEventListener('scroll', updateBuzzVolume, { passive: true })
 
         const onMouseMove = (e) => {
             const rect = mount.getBoundingClientRect()
@@ -288,6 +334,16 @@ export default function HeroSection({ setIsMenuOpen }) {
 
         return () => {
             cancelAnimationFrame(animId)
+            clearInterval(buzzFadeRef.current)
+            window.removeEventListener('scroll', updateBuzzVolume)
+            window.removeEventListener('click', onFirstInteraction)
+            window.removeEventListener('touchstart', onFirstInteraction)
+            window.removeEventListener('keydown', onFirstInteraction)
+            window.removeEventListener('scroll', onFirstInteraction)
+            if (buzzRef.current) {
+                buzzRef.current.pause()
+                buzzRef.current = null
+            }
             window.removeEventListener('resize', onResize)
             mount.removeEventListener('mousemove', onMouseMove)
             mount.removeEventListener('mouseleave', onMouseLeave)

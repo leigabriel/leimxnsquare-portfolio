@@ -18,7 +18,7 @@ export default function AboutMe({ setIsMenuOpen, navigate }) {
     ]
 
     const tools = ['Affinity by Canva', 'Canva', 'VSCode']
-    const tech = ['React.js', 'Tailwind CSS', 'Node.js', 'MySQL']
+    const tech = ['React.js', 'Tailwind CSS', 'Node.js']
 
     const handleTabClick = (index) => {
         setActiveTab(activeTab === index ? null : index)
@@ -26,10 +26,8 @@ export default function AboutMe({ setIsMenuOpen, navigate }) {
 
     return (
         <main className="bg-white min-h-screen text-black flex flex-col overflow-x-hidden selection:bg-black selection:text-white">
-
             <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
-
                 .font-times { font-family: "Times New Roman", Times, serif; }
                 .font-cursive { font-family: 'Dancing Script', cursive; }
 
@@ -58,7 +56,7 @@ export default function AboutMe({ setIsMenuOpen, navigate }) {
             `}</style>
 
             <div className="flex justify-between items-start px-6 md:px-12 pt-8 pb-12">
-                <h1 className="font-times text-6xl sm:text-8xl md:text-[9vw] leading-none">
+                <h1 className="font-times text-4xl sm:text-6xl md:text-[8vw] leading-none">
                     About Me
                 </h1>
 
@@ -125,22 +123,24 @@ export default function AboutMe({ setIsMenuOpen, navigate }) {
                                     </div>
                                 ))}
 
-                                <div className="text-center text-xs tracking-[0.2em] uppercase py-4 border-b-2 border-dotted border-black/40 mt-10">
+                                <div className="text-left text-xs tracking-[0.2em] uppercase py-4 border-b-2 border-dotted border-black/40 mt-10">
                                     Tools & Technologies
                                 </div>
 
-                                <div className="grid md:grid-cols-2">
-                                    <div className="flex flex-col md:border-r-2 border-dotted border-black/40">
+                                <div className="flex flex-col md:flex-row gap-8 mt-4">
+                                    <div className="flex-1 flex flex-col gap-2 md:border-r-2 border-dotted border-black/40 pr-4">
+                                        <span className="font-times uppercase text-sm tracking-widest mb-2">Tools</span>
                                         {tools.map((t) => (
-                                            <div key={t} className="py-4 border-b-2 border-dotted border-black/40 text-sm tracking-widest uppercase hover:bg-black/5">
+                                            <div key={t} className="py-2 border-b-2 border-dotted border-black/40 hover:bg-black/5 text-sm tracking-widest uppercase">
                                                 {t}
                                             </div>
                                         ))}
                                     </div>
 
-                                    <div className="flex flex-col">
+                                    <div className="flex-1 flex flex-col gap-2 pl-4">
+                                        <span className="font-times uppercase text-sm tracking-widest mb-2">Technologies</span>
                                         {tech.map((t) => (
-                                            <div key={t} className="py-4 border-b-2 border-dotted border-black/40 text-sm tracking-widest uppercase hover:bg-black/5">
+                                            <div key={t} className="py-2 border-b-2 border-dotted border-black/40 hover:bg-black/5 text-sm tracking-widest uppercase">
                                                 {t}
                                             </div>
                                         ))}
@@ -181,16 +181,14 @@ export default function AboutMe({ setIsMenuOpen, navigate }) {
                                     </div>
 
                                     <div className="mt-2 lg:mt-18">
-
                                         <div className="flex flex-col gap-6 max-w-7xl mt-4">
-                                            <p className="text-4xl text-black/80 leading-10">
+                                            <p className="text-xl md:text-4xl text-black/80 leading-10">
                                                 I'm Leimxnsquare, a web developer and graphic designer from Oriental Mindoro, Philippines.
                                             </p>
-                                            <p className="text-4xl text-black/80 leading-10">
+                                            <p className="text-xl md:text-4xl text-black/80 leading-10">
                                                 Focused on UI/UX, graphic design, and modern web development.
                                             </p>
                                         </div>
-
                                     </div>
                                 </div>
 

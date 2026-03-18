@@ -346,7 +346,7 @@ export default function HeroSection({ setIsMenuOpen }) {
                 .heart-img-wrapper {
                     position: absolute;
                     pointer-events: none;
-                    animation: popAndFloat 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+                    animation: popAndFloat 5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
                     z-index: 100;
                     width: 80px;
                     height: 80px;

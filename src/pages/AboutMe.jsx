@@ -1,4 +1,8 @@
+import { useState } from 'react'
+
 export default function AboutMe({ setIsMenuOpen, navigate }) {
+    const [activeTab, setActiveTab] = useState(null)
+
     const experiences = [
         {
             company: 'FREELANCE',
@@ -13,249 +17,238 @@ export default function AboutMe({ setIsMenuOpen, navigate }) {
         { label: 'WEB DEVELOPMENT' },
     ]
 
-    const tools = [
-        'Affinity by Canva',
-        'Canva',
-        'VSCode',
-    ]
+    const tools = ['Affinity by Canva', 'Canva', 'VSCode']
+    const tech = ['React.js', 'Tailwind CSS', 'Node.js', 'MySQL']
 
-    const tech = [
-        'React.js',
-        'Tailwind CSS',
-        'Node.js',
-        'MySQL',
-    ]
+    const handleTabClick = (index) => {
+        setActiveTab(activeTab === index ? null : index)
+    }
 
     return (
-        <main className="bg-white min-h-screen text-black">
-            <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500&display=swap');
-                @keyframes amFadeUp {
-                    from { opacity: 0; transform: translateY(16px); }
-                    to   { opacity: 1; transform: translateY(0); }
-                }
-                .am1 { opacity: 0; animation: amFadeUp 0.5s ease-out 0.05s forwards; }
-                .am2 { opacity: 0; animation: amFadeUp 0.5s ease-out 0.12s forwards; }
-                .am3 { opacity: 0; animation: amFadeUp 0.5s ease-out 0.2s forwards; }
-                .am4 { opacity: 0; animation: amFadeUp 0.5s ease-out 0.28s forwards; }
+        <main className="bg-white min-h-screen text-black flex flex-col overflow-x-hidden selection:bg-black selection:text-white">
 
-                .exp-row { border-bottom: 1px dotted rgba(0,0,0,0.12); }
-                .dot-sm { width: 6px; height: 6px; border-radius: 50%; background: rgba(0,0,0,0.25); flex-shrink: 0; }
-                .dot-circle { width: 9px; height: 9px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.3); flex-shrink: 0; }
-                .section-header {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    border-bottom: 1px dotted rgba(0,0,0,0.12);
-                    padding: 0.6rem 1rem;
-                    font-size: 0.6rem;
-                    letter-spacing: 0.18em;
-                    text-transform: uppercase;
+            <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+
+                .font-times { font-family: "Times New Roman", Times, serif; }
+                .font-cursive { font-family: 'Dancing Script', cursive; }
+
+                .folder-tab {
+                    clip-path: polygon(0 0, 360px 0, 400px 5rem, 100% 5rem, 100% 100%, 0 100%);
+                    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+                }
+
+                @media (max-width: 768px) {
+                    .folder-tab {
+                        clip-path: polygon(0 0, 240px 0, 270px 4rem, 100% 4rem, 100% 100%, 0 100%);
+                    }
+                }
+
+                .folder-tab:hover {
+                    transform: translateY(-8px);
+                    filter: brightness(1.03);
+                }
+
+                .dotted-line {
+                    background-image: radial-gradient(circle, rgba(0,0,0,0.5) 1.5px, transparent 1.5px);
+                    background-size: 8px 8px;
+                    height: 3px;
+                    width: 100%;
                 }
             `}</style>
 
-            <div className="am1 px-4 sm:px-8 md:px-12 pt-10 md:pt-14 pb-4 flex items-end justify-between border-b border-black/10 border-dotted">
-                <div className="flex items-end gap-6 md:gap-14">
-                    <h1
-                        className="font-serif tracking-tight leading-none"
-                        style={{ fontSize: 'clamp(3.5rem, 10vw, 9rem)', fontWeight: 400, letterSpacing: '-0.04em' }}
-                    >
-                        About
-                    </h1>
-                    <h1
-                        className="font-serif tracking-tight leading-none pb-1"
-                        style={{ fontSize: 'clamp(3.5rem, 10vw, 9rem)', fontWeight: 400, letterSpacing: '-0.04em' }}
-                    >
-                        me
-                    </h1>
-                </div>
+            <div className="flex justify-between items-start px-6 md:px-12 pt-8 pb-12">
+                <h1 className="font-times text-6xl sm:text-8xl md:text-[9vw] leading-none">
+                    About Me
+                </h1>
+
                 <button
                     onClick={() => setIsMenuOpen(true)}
-                    className="text-[10px] sm:text-xs tracking-widest uppercase text-black/40 hover:text-black transition-colors pb-1"
+                    className="text-xs md:text-sm uppercase tracking-[0.2em] cursor-pointer transition-all duration-300 ease-out hover:bg-black hover:text-white hover:-translate-y-1"
                 >
                     MENU
                 </button>
             </div>
 
-            <div className="am2 flex flex-col border-b border-black/10 border-dotted">
+            <div className="w-full text-black mt-auto flex flex-col pt-12">
 
-                <div className="flex flex-col lg:flex-row border-b border-black/10 border-dotted">
+                <div className={`folder-tab bg-[#b3b3b3] w-full relative z-10 ${activeTab === 0 ? 'drop-shadow-2xl' : ''}`}>
+                    <button onClick={() => handleTabClick(0)} className="w-full group h-16 md:h-20 flex flex-col justify-end text-left cursor-pointer">
+                        <div className="pb-3 md:pb-4">
+                            <h2 className="font-times pl-6 md:pl-12 text-3xl md:text-5xl transition-all duration-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-4">
+                                Experiences
+                            </h2>
+                        </div>
+                        <div className="dotted-line transition-all duration-500 opacity-60 group-hover:opacity-100"></div>
+                    </button>
 
-                    <div className="w-full lg:w-[32%] shrink-0 border-b lg:border-b-0 lg:border-r border-black/10 border-dotted">
-                        <div className="section-header">
-                            <div className="flex items-center gap-2.5">
-                                <div className="dot-circle"></div>
-                                <span>ABOUT</span>
-                            </div>
-                            <div className="flex items-center gap-2.5">
-                                <span>DETAILS</span>
-                                <div className="dot-sm"></div>
-                            </div>
-                        </div>
-                        <div className="p-4 sm:p-6 flex flex-col gap-4">
-                            <div className="aspect-square w-full max-w-65 overflow-hidden bg-zinc-100">
-                                <img
-                                    src="https://avatars.githubusercontent.com/u/223958636?v=4"
-                                    alt="Profile"
-                                    className="w-full h-full object-cover grayscale"
-                                />
-                            </div>
-                            <div className="flex flex-col gap-0.5">
-                                <h2 className="text-xl sm:text-2xl font-serif tracking-tight">Leimxnsquare</h2>
-                                <p className="text-[9px] tracking-widest uppercase text-black/35">ORIENTAL MINDORO, PH</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="flex-1 flex flex-col">
-                        <div className="section-header">
-                            <div className="flex items-center gap-2.5">
-                                <div className="dot-sm"></div>
-                                <span>EXPERIENCES</span>
-                            </div>
-                            <div className="dot-sm"></div>
-                        </div>
-                        <div className="p-4 sm:p-6">
-                            <div className="flex justify-between text-[9px] tracking-widest uppercase text-black/25 border-b border-black/10 border-dotted pb-2 mb-1">
-                                <span>COMPANY</span>
-                                <span>POSITION</span>
-                            </div>
-                            {experiences.map(({ company, location, position }, i) => (
-                                <div key={i} className="exp-row flex justify-between items-start py-4 gap-4">
-                                    <div className="flex flex-col gap-0.5">
-                                        <span className="text-sm sm:text-base tracking-tight">{company}</span>
-                                        <span className="text-[9px] tracking-widest uppercase text-black/30">{location}</span>
-                                    </div>
-                                    <span className="text-[10px] sm:text-xs tracking-widest uppercase text-right max-w-[55%] text-black/70">{position}</span>
+                    <div className="grid transition-all duration-500" style={{ gridTemplateRows: activeTab === 0 ? '1fr' : '0fr' }}>
+                        <div className="overflow-hidden">
+                            <div className="px-6 md:px-12 pt-8 pb-10">
+                                <div className="hidden md:grid grid-cols-3 gap-8 pb-4 border-b-2 border-dotted border-black/40 text-xs tracking-widest uppercase">
+                                    <span>Location</span>
+                                    <span>Company</span>
+                                    <span>Position</span>
                                 </div>
-                            ))}
+
+                                {experiences.map((exp, i) => (
+                                    <div key={i} className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-8 py-6 border-b-2 border-dotted border-black/40 hover:bg-black/5 transition-colors">
+                                        <span className="text-sm tracking-widest uppercase text-black/70">{exp.location}</span>
+                                        <span className="text-sm tracking-widest uppercase">{exp.company}</span>
+                                        <span className="text-sm tracking-widest uppercase">{exp.position}</span>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
+
+                    <div className="h-16 md:h-20"></div>
                 </div>
 
-                <div className="flex flex-col lg:flex-row border-b border-black/10 border-dotted">
-                    <div className="w-full lg:w-[32%] shrink-0 bg-[#FFEA00] border-b lg:border-b-0 lg:border-r border-black/10 border-dotted">
-                        <div className="section-header" style={{ borderBottomColor: 'rgba(0,0,0,0.15)' }}>
-                            <div className="flex items-center gap-2.5">
-                                <div className="dot-circle" style={{ borderColor: 'rgba(0,0,0,0.35)' }}></div>
-                                <span>SKILLSETS</span>
-                            </div>
-                            <div className="dot-sm" style={{ background: 'rgba(0,0,0,0.3)' }}></div>
-                        </div>
-                        <div className="p-4 sm:p-6">
-                            <h2
-                                className="font-serif tracking-tight leading-tight"
-                                style={{ fontSize: 'clamp(2.2rem, 5vw, 4rem)', fontWeight: 400, letterSpacing: '-0.03em' }}
-                            >
+                <div className={`folder-tab bg-[#ffff00] w-full relative z-20 -mt-16 md:-mt-20 ${activeTab === 1 ? 'drop-shadow-2xl' : ''}`}>
+                    <button onClick={() => handleTabClick(1)} className="w-full group h-16 md:h-20 flex flex-col justify-end text-left cursor-pointer">
+                        <div className="pb-3 md:pb-4">
+                            <h2 className="font-times pl-6 md:pl-12 text-3xl md:text-5xl transition-all duration-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-4">
                                 Skillsets
                             </h2>
                         </div>
+                        <div className="dotted-line transition-all duration-500 opacity-60 group-hover:opacity-100"></div>
+                    </button>
+
+                    <div className="grid transition-all duration-500" style={{ gridTemplateRows: activeTab === 1 ? '1fr' : '0fr' }}>
+                        <div className="overflow-hidden">
+                            <div className="px-6 md:px-12 pt-8 pb-10">
+                                {skills.map((s, i) => (
+                                    <div key={i} className="flex gap-6 py-4 border-b-2 border-dotted border-black/40 hover:bg-black/5">
+                                        <span className="font-times text-4xl">{`0${i + 1}`}</span>
+                                        <span className="font-times text-4xl capitalize">{s.label.toUpperCase()}</span>
+                                    </div>
+                                ))}
+
+                                <div className="text-center text-xs tracking-[0.2em] uppercase py-4 border-b-2 border-dotted border-black/40 mt-10">
+                                    Tools & Technologies
+                                </div>
+
+                                <div className="grid md:grid-cols-2">
+                                    <div className="flex flex-col md:border-r-2 border-dotted border-black/40">
+                                        {tools.map((t) => (
+                                            <div key={t} className="py-4 border-b-2 border-dotted border-black/40 text-sm tracking-widest uppercase hover:bg-black/5">
+                                                {t}
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="flex flex-col">
+                                        {tech.map((t) => (
+                                            <div key={t} className="py-4 border-b-2 border-dotted border-black/40 text-sm tracking-widest uppercase hover:bg-black/5">
+                                                {t}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div className="flex-1 flex flex-col">
-                        <div className="section-header">
-                            <div className="flex items-center gap-2.5">
-                                <div className="dot-sm"></div>
-                                <span>SKILLS & TOOLS</span>
-                            </div>
-                            <div className="dot-sm"></div>
-                        </div>
-                        <div className="p-4 sm:p-6 flex flex-col gap-5">
-                            <div className="flex flex-col gap-2">
-                                <span className="text-[9px] tracking-widest uppercase text-black/30">DISCIPLINES</span>
-                                <div className="flex flex-wrap gap-2">
-                                    {skills.map(({ label }) => (
-                                        <span key={label} className="border border-black/20 px-3 py-1.5 text-[10px] sm:text-xs tracking-widest uppercase hover:bg-[#FFEA00] hover:border-[#FFEA00] transition-colors cursor-default">
-                                            {label}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <span className="text-[9px] tracking-widest uppercase text-black/30">TOOLS</span>
-                                <div className="flex flex-wrap gap-2">
-                                    {tools.map((t) => (
-                                        <span key={t} className="border border-black/20 px-3 py-1.5 text-[10px] sm:text-xs tracking-widest uppercase hover:bg-[#FFEA00] hover:border-[#FFEA00] transition-colors cursor-default">
-                                            {t}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <span className="text-[9px] tracking-widest uppercase text-black/30">TECHNOLOGIES</span>
-                                <div className="flex flex-wrap gap-2">
-                                    {tech.map((t) => (
-                                        <span key={t} className="border border-black/20 px-3 py-1.5 text-[10px] sm:text-xs tracking-widest uppercase hover:bg-[#FFEA00] hover:border-[#FFEA00] transition-colors cursor-default">
-                                            {t}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div className="h-16 md:h-20"></div>
                 </div>
 
-                <div className="flex flex-col lg:flex-row">
-                    <div className="w-full lg:w-[32%] shrink-0 border-b lg:border-b-0 lg:border-r border-black/10 border-dotted">
-                        <div className="section-header">
-                            <div className="flex items-center gap-2.5">
-                                <div className="dot-circle"></div>
-                                <span>PROFILE</span>
-                            </div>
-                            <div className="dot-sm"></div>
-                        </div>
-                        <div className="p-4 sm:p-6">
-                            <h2
-                                className="font-serif tracking-tight leading-tight"
-                                style={{ fontSize: 'clamp(2.2rem, 5vw, 4rem)', fontWeight: 400, letterSpacing: '-0.03em' }}
-                            >
-                                Leimxnsquare
+                <div className={`folder-tab bg-[#f5f5f5] w-full relative z-30 -mt-16 md:-mt-20 ${activeTab === 2 ? 'drop-shadow-2xl' : ''}`}>
+                    <button onClick={() => handleTabClick(2)} className="w-full group h-16 md:h-20 flex flex-col justify-end text-left cursor-pointer">
+                        <div className="pb-3 md:pb-4">
+                            <h2 className="font-times pl-6 md:pl-12 text-3xl md:text-5xl transition-all duration-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-4">
+                                Profile
                             </h2>
                         </div>
-                    </div>
+                        <div className="dotted-line transition-all duration-500 opacity-60 group-hover:opacity-100"></div>
+                    </button>
 
-                    <div className="flex-1 flex flex-col">
-                        <div className="section-header">
-                            <div className="dot-sm"></div>
-                            <span>BIO</span>
-                            <div className="dot-sm"></div>
-                        </div>
-                        <div className="p-4 sm:p-6 md:p-8 flex flex-col gap-5">
-                            <p
-                                className="text-black/75 leading-relaxed"
-                                style={{ fontFamily: "'Dancing Script', cursive", fontSize: 'clamp(1.1rem, 2.2vw, 1.5rem)' }}
-                            >
-                                I'm Leimxnsquare, a web developer and graphic designer from Oriental Mindoro, Philippines. I create poster designs for friends and clients, and build modern web experiences with clean, purposeful design.
-                            </p>
-                            <p
-                                className="text-black/45 leading-relaxed"
-                                style={{ fontFamily: "'Dancing Script', cursive", fontSize: 'clamp(0.95rem, 1.8vw, 1.3rem)' }}
-                            >
-                                Passionate about pushing creative boundaries across UI/UX design, graphic design, and web development. I embrace every challenge with an open and proactive mindset.
-                            </p>
-                            <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                                <button
-                                    onClick={() => navigate('works')}
-                                    className="border border-black px-6 py-3 text-[10px] sm:text-xs tracking-widest uppercase hover:bg-black hover:text-white transition-colors"
-                                >
-                                    VIEW WORKS →
-                                </button>
-                                <a
-                                    href="mailto:hello@leimxnsquare.com"
-                                    className="border border-black/25 px-6 py-3 text-[10px] sm:text-xs tracking-widest uppercase hover:border-black transition-colors text-center"
-                                >
-                                    GET IN TOUCH
-                                </a>
+                    <div className="grid transition-all duration-500" style={{ gridTemplateRows: activeTab === 2 ? '1fr' : '0fr' }}>
+                        <div className="overflow-hidden">
+                            <div className="px-6 md:px-12 pt-10 pb-10">
+
+                                <div className="grid lg:grid-cols-[420px_1fr] gap-12 border-b-2 border-dotted border-black/40 pb-10">
+
+                                    <div className="w-full">
+                                        <h3 className="font-times text-5xl mb-6">Leimxnsquare</h3>
+                                        <div className="w-full aspect-square overflow-hidden">
+                                            <img
+                                                src="https://avatars.githubusercontent.com/u/223958636?v=4"
+                                                alt="Profile"
+                                                className="w-full h-full object-cover grayscale transition-transform duration-700 hover:scale-105"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-2 lg:mt-18">
+
+                                        <div className="flex flex-col gap-6 max-w-7xl mt-4">
+                                            <p className="text-4xl text-black/80 leading-10">
+                                                I'm Leimxnsquare, a web developer and graphic designer from Oriental Mindoro, Philippines.
+                                            </p>
+                                            <p className="text-4xl text-black/80 leading-10">
+                                                Focused on UI/UX, graphic design, and modern web development.
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col">
+
+                                    <div className="flex flex-col md:flex-row border-b-2 border-dotted border-black/40 hover:bg-black/5">
+                                        <div className="w-full md:w-1/3 py-4 font-times text-3xl">email</div>
+                                        <a
+                                            href="mailto:malibiranleigabriel@gmail.com"
+                                            className="w-full md:w-2/3 py-4 text-sm tracking-widest lowercase hover:opacity-60"
+                                        >
+                                            malibiranleigabriel@gmail.com
+                                        </a>
+                                    </div>
+
+                                    <div className="flex flex-col md:flex-row border-b-2 border-dotted border-black/40 hover:bg-black/5">
+                                        <div className="w-full md:w-1/3 py-4 font-times text-3xl">instagram</div>
+                                        <a
+                                            href="https://instagram.com/leimxnsquare"
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="w-full md:w-2/3 py-4 text-sm tracking-widest lowercase hover:opacity-60"
+                                        >
+                                            @leimxnsquare
+                                        </a>
+                                    </div>
+
+                                    <div className="flex flex-col md:flex-row border-b-2 border-dotted border-black/40 hover:bg-black/5">
+                                        <div className="w-full md:w-1/3 py-4 font-times text-3xl">github</div>
+                                        <a
+                                            href="https://github.com/leigabriel"
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="w-full md:w-2/3 py-4 text-sm tracking-widest lowercase hover:opacity-60"
+                                        >
+                                            github.com/leigabriel
+                                        </a>
+                                    </div>
+
+                                    <div
+                                        onClick={() => navigate('works')}
+                                        className="flex flex-col md:flex-row border-b-2 border-dotted border-black/40 hover:bg-black/5 cursor-pointer"
+                                    >
+                                        <div className="w-full md:w-1/3 py-4 font-times text-3xl">portfolio</div>
+                                        <div className="w-full md:w-2/3 py-4 text-sm tracking-widest uppercase">
+                                            view works
+                                        </div>
+                                    </div>
+
+                                </div>
+
                             </div>
                         </div>
                     </div>
+
+                    <div className="h-16 md:h-20"></div>
                 </div>
 
-            </div>
-
-            <div className="am4 px-4 sm:px-8 md:px-12 py-5 flex justify-between items-center">
-                <span className="text-[9px] tracking-widest uppercase text-black/25">LEIMXNSQUARE — ©2026</span>
-                <span className="text-[9px] tracking-widest uppercase text-black/25">ORIENTAL MINDORO, PH</span>
             </div>
         </main>
     )

@@ -9,7 +9,7 @@ a, button, [role="button"], input, select, .cursor-pointer {
     cursor: url("https://cdn.prod.website-files.com/684433cbdb896cfecac10c42/685020770b2138255626c49d_Cursor_%20Pointer%20Links.svg") 12 0, pointer !important;
 }
 
-p, h1, h2, h3, h4, h5, h6, span, div:not(:empty) {
+p, h1, h2, h3, h4, h5, h6, span {
     cursor: url("https://cdn.prod.website-files.com/684433cbdb896cfecac10c42/6850207768efd1a9fc610efe_Cursor_%20Text.svg") 16 16, text;
 }
 
@@ -22,8 +22,7 @@ p, h1, h2, h3, h4, h5, h6, span, div:not(:empty) {
 }
 
 div {
-    cursor: inherit;
-}
+    cursor: url("https://cdn.prod.website-files.com/684433cbdb896cfecac10c42/685020772e431a751ff5fbef_Cursor_%20Pointer.svg") 2 0, auto;}
 
 * {
     scrollbar-width: none;

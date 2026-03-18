@@ -21,6 +21,12 @@ export default function AboutMe({ setIsMenuOpen, navigate }) {
     const tech = ['React.js', 'Tailwind CSS', 'Node.js']
 
     const handleTabClick = (index) => {
+        const isOpening = activeTab !== index
+        if (isOpening) {
+            const audio = new Audio('/folder.mp3')
+            audio.volume = 0.5
+            audio.play().catch(() => { })
+        }
         setActiveTab(activeTab === index ? null : index)
     }
 
@@ -73,9 +79,9 @@ export default function AboutMe({ setIsMenuOpen, navigate }) {
                 <div className={`folder-tab bg-[#b3b3b3] w-full relative z-10 ${activeTab === 0 ? 'drop-shadow-2xl' : ''}`}>
                     <button onClick={() => handleTabClick(0)} className="w-full group h-16 md:h-20 flex flex-col justify-end text-left cursor-pointer">
                         <div className="pb-3 md:pb-4">
-                            <h2 className="font-times pl-6 md:pl-12 text-3xl md:text-5xl transition-all duration-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-4">
+                            <button className="font-times pl-6 md:pl-12 text-3xl md:text-5xl transition-all duration-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-4">
                                 Experiences
-                            </h2>
+                            </button>
                         </div>
                         <div className="dotted-line transition-all duration-500 opacity-60 group-hover:opacity-100"></div>
                     </button>
@@ -106,9 +112,9 @@ export default function AboutMe({ setIsMenuOpen, navigate }) {
                 <div className={`folder-tab bg-[#ffff00] w-full relative z-20 -mt-16 md:-mt-20 ${activeTab === 1 ? 'drop-shadow-2xl' : ''}`}>
                     <button onClick={() => handleTabClick(1)} className="w-full group h-16 md:h-20 flex flex-col justify-end text-left cursor-pointer">
                         <div className="pb-3 md:pb-4">
-                            <h2 className="font-times pl-6 md:pl-12 text-3xl md:text-5xl transition-all duration-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-4">
+                            <button className="font-times pl-6 md:pl-12 text-3xl md:text-5xl transition-all duration-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-4">
                                 Skillsets
-                            </h2>
+                            </button>
                         </div>
                         <div className="dotted-line transition-all duration-500 opacity-60 group-hover:opacity-100"></div>
                     </button>
@@ -156,9 +162,9 @@ export default function AboutMe({ setIsMenuOpen, navigate }) {
                 <div className={`folder-tab bg-[#f5f5f5] w-full relative z-30 -mt-16 md:-mt-20 ${activeTab === 2 ? 'drop-shadow-2xl' : ''}`}>
                     <button onClick={() => handleTabClick(2)} className="w-full group h-16 md:h-20 flex flex-col justify-end text-left cursor-pointer">
                         <div className="pb-3 md:pb-4">
-                            <h2 className="font-times pl-6 md:pl-12 text-3xl md:text-5xl transition-all duration-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-4">
+                            <button className="font-times pl-6 md:pl-12 text-3xl md:text-5xl transition-all duration-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-4">
                                 Profile
-                            </h2>
+                            </button>
                         </div>
                         <div className="dotted-line transition-all duration-500 opacity-60 group-hover:opacity-100"></div>
                     </button>

@@ -27,6 +27,12 @@ export default function Works({ setIsMenuOpen, navigate }) {
     const [modal, setModal] = useState(null)
 
     const handleTabClick = (index) => {
+        const isOpening = activeTab !== index
+        if (isOpening) {
+            const audio = new Audio('/folder.mp3')
+            audio.volume = 0.5
+            audio.play().catch(() => { })
+        }
         setActiveTab(activeTab === index ? null : index)
     }
 
@@ -139,7 +145,7 @@ export default function Works({ setIsMenuOpen, navigate }) {
                     >
                         <div className="pb-3 md:pb-4">
                             <h2 className="font-times pl-6 md:pl-12 text-3xl md:text-5xl text-white transition-all duration-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-4">
-                                Web Projects
+                                01 Web Projects
                             </h2>
                         </div>
                         <div className="dotted-line-white transition-all duration-500 opacity-60 group-hover:opacity-100"></div>
@@ -200,7 +206,7 @@ export default function Works({ setIsMenuOpen, navigate }) {
                     >
                         <div className="pb-3 md:pb-4">
                             <h2 className="font-times pl-6 md:pl-12 text-3xl md:text-5xl transition-all duration-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-4">
-                                Poster Design
+                                02 Poster Design
                             </h2>
                         </div>
                         <div className="dotted-line transition-all duration-500 opacity-60 group-hover:opacity-100"></div>

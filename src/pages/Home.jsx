@@ -8,8 +8,15 @@ import ContactSection from '../components/home/ContactSection'
 
 export default function Home({ setIsMenuOpen, contactRef, navigate }) {
     return (
-        <ReactLenis root>
-        <main className="relative bg-black min-h-screen">
+        <ReactLenis
+            root
+            options={{
+                lerp: 0.08,
+                smoothWheel: true,
+                smoothTouch: false,
+            }}
+        >        
+            <main className="relative bg-black min-h-screen">
             <HeroSection setIsMenuOpen={setIsMenuOpen} />
             <VideoSection />
             <AboutSection navigate={navigate} />

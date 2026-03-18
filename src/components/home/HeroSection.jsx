@@ -11,7 +11,9 @@ export default function HeroSection({ setIsMenuOpen }) {
     const buzzFadeRef = useRef(null)
     const [menuVisible, setMenuVisible] = useState(true)
     const [typedText, setTypedText] = useState('')
-    const [hearts, setHearts] = useState([])
+    const [cursorOnBee, setCursorOnBee] = useState(false)
+    const [beeMessage, setBeeMessage] = useState(null)
+    const beeMessageTimer = useRef(null)
 
     useEffect(() => {
         const text = 'A COLLECTION\nOF DESIGNS'
@@ -32,6 +34,38 @@ export default function HeroSection({ setIsMenuOpen }) {
         }
         window.addEventListener('scroll', onScroll, { passive: true })
         return () => window.removeEventListener('scroll', onScroll)
+    }, [])
+
+
+
+    useEffect(() => {
+        const messages = [
+            'Scroll down ↓',
+            'Explore my work',
+            'Designed by Lei',
+            'View poster designs',
+            'Hire Lei',
+            'Open the menu →',
+            'Graphic design included',
+            'Web development expertise',
+            'Inspired by wildyriftian.com',
+        ]
+
+        const show = () => {
+            const msg = messages[Math.floor(Math.random() * messages.length)]
+            setBeeMessage(msg)
+            clearTimeout(beeMessageTimer.current)
+            beeMessageTimer.current = setTimeout(() => {
+                setBeeMessage(null)
+                beeMessageTimer.current = setTimeout(show, 1000 + Math.random() * 1500)
+            }, 1200)
+        }
+
+        const initial = setTimeout(show, 1000)
+        return () => {
+            clearTimeout(initial)
+            clearTimeout(beeMessageTimer.current)
+        }
     }, [])
 
     useEffect(() => {
@@ -122,17 +156,6 @@ export default function HeroSection({ setIsMenuOpen }) {
             (err) => console.error(err)
         )
 
-        let heartCounter = 0
-        const spawnHeart = (x, y) => {
-            const id = heartCounter++
-            const spreadX = x + (Math.random() - 0.5) * 30
-            const spreadY = y + (Math.random() - 0.5) * 30
-
-            setHearts(prev => [...prev, { id, x: spreadX, y: spreadY }])
-            setTimeout(() => {
-                setHearts(prev => prev.filter(h => h.id !== id))
-            }, 1200)
-        }
 
         const raycaster = new THREE.Raycaster()
         const mouse = new THREE.Vector2()
@@ -178,7 +201,6 @@ export default function HeroSection({ setIsMenuOpen }) {
 
         const onMouseMove = (e) => {
             const rect = mount.getBoundingClientRect()
-
             cursorPos.current = { x: e.clientX, y: e.clientY }
 
             mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1
@@ -192,19 +214,15 @@ export default function HeroSection({ setIsMenuOpen }) {
             if (beeRoot) {
                 raycaster.setFromCamera(mouse, camera)
                 const intersects = raycaster.intersectObject(beeRoot, true)
-
-                if (intersects.length > 0) {
-                    isHoveringBee.current = true
-                    mount.style.cursor = 'pointer'
-                } else {
-                    isHoveringBee.current = false
-                    mount.style.cursor = 'grab'
-                }
+                const hit = intersects.length > 0
+                isHoveringBee.current = hit
+                setCursorOnBee(hit)
             }
         }
 
         const onMouseLeave = () => {
             isHoveringBee.current = false
+            setCursorOnBee(false)
         }
 
         let isDragging = false
@@ -224,9 +242,6 @@ export default function HeroSection({ setIsMenuOpen }) {
             if (beeRoot) {
                 raycaster.setFromCamera(mouse, camera)
                 const intersects = raycaster.intersectObject(beeRoot, true)
-                if (intersects.length > 0) {
-                    spawnHeart(prevX, prevY)
-                }
             }
         }
 
@@ -249,19 +264,11 @@ export default function HeroSection({ setIsMenuOpen }) {
         mount.addEventListener('touchend', onTouchEnd)
 
         const clock = new THREE.Clock()
-        let lastHeartSpawn = 0
 
         const animate = () => {
             animId = requestAnimationFrame(animate)
             const t = clock.getElapsedTime()
 
-            if (isHoveringBee.current) {
-                const now = Date.now()
-                if (now - lastHeartSpawn > 120) {
-                    spawnHeart(cursorPos.current.x, cursorPos.current.y)
-                    lastHeartSpawn = now
-                }
-            }
 
             if (beeRoot) {
                 rotY += (targetRotY - rotY) * 0.06
@@ -375,8 +382,6 @@ export default function HeroSection({ setIsMenuOpen }) {
                     50% { opacity: 0; }
                 }
 
-                @keyframes popAndFloat {
-                    0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0; }
                     15% { transform: translate(-50%, -30px) scale(1); opacity: 1; }
                     100% { transform: translate(-50%, -140px) scale(0.8); opacity: 0; }
                 }
@@ -399,40 +404,76 @@ export default function HeroSection({ setIsMenuOpen }) {
                     vertical-align: middle;
                 }
 
-                .heart-img-wrapper {
-                    position: absolute;
-                    pointer-events: none;
-                    animation: popAndFloat 5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-                    z-index: 100;
-                    width: 80px;
-                    height: 80px;
+                @keyframes bubbleIn {
+                    0%   { opacity: 0; transform: translateX(-50%) translateY(6px) scale(0.92); }
+                    60%  { opacity: 1; transform: translateX(-50%) translateY(-2px) scale(1.02); }
+                    100% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
                 }
 
-                .heart-img-wrapper img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: contain;
+                @keyframes bubbleOut {
+                    0%   { opacity: 1; }
+                    100% { opacity: 0; transform: translateX(-50%) translateY(-6px); }
                 }
+
+                .bee-bubble {
+                    position: absolute;
+                    top: 28%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 20;
+                    pointer-events: none;
+                    animation: bubbleIn 0.18s steps(1, end) forwards;
+                    image-rendering: pixelated;
+                }
+
+                .bee-bubble-text {
+                    display: block;
+                    background: #fff;
+                    color: #000;
+                    font-family: 'JetBrains Mono', monospace;
+                    font-size: 11px;
+                    font-weight: 400;
+                    letter-spacing: 0.04em;
+                    white-space: nowrap;
+                    padding: 7px 12px;
+                    border: 2.5px solid #000;
+                    box-shadow: 3px 3px 0 #000;
+                    image-rendering: pixelated;
+                }
+
+                .bee-bubble-tail {
+                    width: 10px;
+                    height: 10px;
+                    background: #fff;
+                    border-left: 2.5px solid #000;
+                    border-bottom: 2.5px solid #000;
+                    box-shadow: 2px 2px 0 #000;
+                    margin-left: 24px;
+                    image-rendering: pixelated;
+                }
+
             `}</style>
 
-            <section className="sticky top-0 z-0 bg-black w-full h-dvh overflow-hidden">
+            <section
+                className="sticky top-0 z-0 bg-black w-full h-dvh overflow-hidden"
+                style={{ cursor: cursorOnBee ? 'grab' : 'default' }}
+            >
                 <div
                     ref={mountRef}
-                    className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
+                    className="absolute inset-0 w-full h-full"
                 />
 
-                {hearts.map((heart) => (
+
+                {beeMessage && (
                     <div
-                        key={heart.id}
-                        className="heart-img-wrapper"
-                        style={{ left: heart.x, top: heart.y }}
+                        key={beeMessage}
+                        className="bee-bubble"
+                        aria-live="polite"
                     >
-                        <img
-                            src="/heart.png"
-                            alt="heart"
-                        />
+                        <span className="bee-bubble-text">{beeMessage}</span>
+                        <div className="bee-bubble-tail" />
                     </div>
-                ))}
+                )}
 
                 <div className="absolute inset-0 z-10 flex flex-col justify-between p-4 sm:p-6 md:p-10 pointer-events-none">
                     <div className="flex justify-between items-start w-full pointer-events-auto">
@@ -442,17 +483,7 @@ export default function HeroSection({ setIsMenuOpen }) {
 
                         <button
                             onClick={() => setIsMenuOpen(true)}
-                            className={`
-                                fade-b
-                                text-white text-xs sm:text-sm tracking-widest uppercase cursor-pointer
-                                transition-all duration-300 ease-out
-                                hover:bg-white hover:text-black
-                                hover:-translate-y-1
-                                ${menuVisible
-                                    ? 'opacity-100 translate-y-0 pointer-events-auto'
-                                    : 'opacity-0 -translate-y-3 pointer-events-none'
-                                }
-                            `}
+                            className={`fade-b text-white text-xs sm:text-sm tracking-widest uppercase cursor-pointer transition-all duration-300 ease-out hover:bg-white hover:text-black hover:-translate-y-1 ${menuVisible ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-3 pointer-events-none'}`}
                         >
                             MENU
                         </button>

@@ -24,7 +24,7 @@ const WORKS = [
         subtitle: 'Fitterkarma',
         year: '2026',
         category: 'Poster Design',
-        description: 'Raw and visceral poster work exploring the tension between beauty and decay. Designed to provoke discomfort while remaining visually arresting.',
+        description: 'This piece serves as a haunting exploration of the parasitic nature of devotion, where affection and consumption become indistinguishable. By juxtaposing a glowing, ethereal core with jagged, blood-red typography, the design captures the inherent violence of intimacy—the way we both sustain and devour the things we love.',
         image: '/posters/kanibalismo.png',
         imageAlt: 'Kanibalismo Poster',
         link: null,
@@ -40,13 +40,13 @@ const WORKS = [
         subtitle: 'The Weeknd',
         year: '2026',
         category: 'Poster Design',
-        description: 'A moody typographic poster capturing the obsession and devotion of the track. Dark palette and sharp contrast bring the emotional weight of the song to life.',
+        description: 'This design explores the intersection of idol culture and gritty street art. By layering pop-culture icons with aggressive graphic elements and distorted textures, the piece mimics the feel of a flyer found on a city wall. It’s a collision of devotion and noise, where the polish of a star is filtered through the lens of urban decay.',
         image: '/posters/yunjin.png',
         imageAlt: 'Die For You Poster',
         link: null,
         tabBg: '#1a1a2e',
         bodyBg: '#16213e',
-        accent: '#e94560',
+        accent: '#fff000',
         isDark: true,
     },
     {
@@ -329,7 +329,6 @@ function WorkModal({ work, onClose }) {
     const [showPreview, setShowPreview] = useState(false)
     const accent = work.accent || '#1a1400'
     const bg = work.bodyBg || '#FFEA00'
-    const yr = (work.year || '2026').slice(-2)
 
     useEffect(() => {
         const id = requestAnimationFrame(() => {
@@ -356,7 +355,7 @@ function WorkModal({ work, onClose }) {
         <div
             ref={overlayRef}
             onClick={handleClose}
-            className="fixed inset-0 z-50 flex items-center justify-center"
+            className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto"
             style={{
                 padding: 'clamp(12px, 4vw, 40px)',
                 background: 'rgba(0,0,0,0.85)',
@@ -376,9 +375,6 @@ function WorkModal({ work, onClose }) {
                 .f-mono { font-family: 'JetBrains Mono', monospace; }
                 .f-serif { font-family: 'SimSun-ExtB', 'SimSun', 'STSong', serif; }
                 .no-scroll::-webkit-scrollbar { display: none; }
-                .poster-border { border: 1.5px dashed; border-radius: 0; }
-                .inner-dash { border: none; border-top: 1.5px dashed; margin: 0; }
-                .preview-btn:hover { opacity: 1 !important; }
             `}</style>
 
             {showPreview && (
@@ -406,95 +402,83 @@ function WorkModal({ work, onClose }) {
 
             <div
                 onClick={e => e.stopPropagation()}
-                className="relative w-full"
-                style={{ maxWidth: '480px' }}
+                ref={panelRef}
+                className="relative w-full max-w-125 flex flex-col my-auto"
+                style={{
+                    background: bg,
+                    opacity: 0,
+                    transform: 'scale(0.96)',
+                    transition: 'opacity 0.3s ease, transform 0.35s cubic-bezier(0.16,1,0.3,1)',
+                    padding: '16px',
+                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+                }}
             >
-                <span className="absolute rounded-full pointer-events-none z-20" style={{ width: 11, height: 11, top: -5.5, left: -5.5, background: bg, border: `2px solid ${accent}` }} />
-                <span className="absolute rounded-full pointer-events-none z-20" style={{ width: 11, height: 11, top: -5.5, right: -5.5, background: bg, border: `2px solid ${accent}` }} />
-                <span className="absolute rounded-full pointer-events-none z-20" style={{ width: 11, height: 11, bottom: -5.5, left: -5.5, background: bg, border: `2px solid ${accent}` }} />
-                <span className="absolute rounded-full pointer-events-none z-20" style={{ width: 11, height: 11, bottom: -5.5, right: -5.5, background: bg, border: `2px solid ${accent}` }} />
-
                 <div
-                    ref={panelRef}
-                    className="no-scroll poster-border w-full flex flex-col"
-                    style={{
-                        background: bg,
-                        borderColor: accent,
-                        maxHeight: '94vh',
-                        overflowY: 'auto',
-                        overflowX: 'hidden',
-                        scrollbarWidth: 'none',
-                        opacity: 0,
-                        transform: 'scale(0.96)',
-                        transition: 'opacity 0.3s ease, transform 0.35s cubic-bezier(0.16,1,0.3,1)',
-                    }}
+                    className="relative w-full flex flex-col border-[1.5px] border-dashed"
+                    style={{ borderColor: accent }}
                 >
-                    <div className="f-mono flex items-center justify-between px-5 pt-5 pb-1" style={{ color: accent }}>
-                        <span className="text-[10px] tracking-[0.2em] uppercase">{work.category}</span>
-                        <button
-                            onClick={handleClose}
-                            className="f-mono bg-transparent border-none cursor-pointer p-0 text-[10px] tracking-[0.2em] uppercase"
-                            style={{ color: accent, opacity: 0.55 }}
-                        >
-                            CLOSE
-                        </button>
+                    <div className="absolute w-2.5 h-2.5 rounded-full" style={{ background: accent, top: -5, left: -5 }} />
+                    <div className="absolute w-2.5 h-2.5 rounded-full" style={{ background: accent, top: -5, right: -5 }} />
+                    <div className="absolute w-2.5 h-2.5 rounded-full" style={{ background: accent, bottom: -5, left: -5 }} />
+                    <div className="absolute w-2.5 h-2.5 rounded-full" style={{ background: accent, bottom: -5, right: -5 }} />
+
+                    <div className="flex justify-between items-center px-4 pt-4 pb-1">
+                        <span className="f-mono text-[11px] sm:text-xs tracking-[0.2em] uppercase flex items-center gap-2" style={{ color: accent }}>
+                            ● {work.category}
+                        </span>
+                        <span className="f-mono text-[11px] sm:text-xs tracking-[0.2em] uppercase" style={{ color: accent }}>
+                            ●
+                        </span>
+                    </div>
+
+                    <div className="px-4 pb-4">
+                        <h2 className="f-serif text-[clamp(2.5rem,8vw,3.5rem)] uppercase leading-[0.9] m-0 tracking-tight" style={{ color: accent }}>
+                            {work.title} - {work.subtitle}
+                        </h2>
                     </div>
 
                     <div
-                        className="f-serif px-4 pb-3 uppercase w-full"
-                        style={{ fontSize: 'clamp(1.7rem, 6.5vw, 3.2rem)', color: accent, lineHeight: 0.9, letterSpacing: '-0.01em' }}
+                        className="relative w-full border-t-[1.5px] border-dashed cursor-pointer"
+                        style={{ borderColor: accent }}
+                        onClick={() => setShowPreview(true)}
                     >
-                        {work.title} - {work.subtitle}
+                        <div className="absolute w-2.5 h-2.5 rounded-full" style={{ background: accent, top: -5, left: -5 }} />
+                        <div className="absolute w-2.5 h-2.5 rounded-full" style={{ background: accent, top: -5, right: -5 }} />
+
+                        <img src={work.image} alt={work.imageAlt} className="w-full h-auto max-h-[55vh] object-cover block" />
                     </div>
 
-                    <div className="inner-dash w-full" style={{ borderColor: accent, opacity: 0.4 }} />
+                    <div className="relative w-full border-t-[1.5px] border-dashed p-4" style={{ borderColor: accent }}>
+                        <div className="absolute w-2.5 h-2.5 rounded-full" style={{ background: accent, top: -5, left: -5 }} />
+                        <div className="absolute w-2.5 h-2.5 rounded-full" style={{ background: accent, top: -5, right: -5 }} />
 
-                    <div className="inner-dash w-full" style={{ borderColor: accent, opacity: 0.4 }} />
-
-                    <div className="px-4 py-3">
-                        <p
-                            className="f-mono m-0 uppercase"
-                            style={{
-                                fontSize: 'clamp(0.55rem, 1.2vw, 0.72rem)',
-                                color: accent,
-                                lineHeight: 1.9,
-                                letterSpacing: '0.07em',
-                                textAlign: 'justify',
-                                opacity: 0.8,
-                            }}
-                        >
+                        <p className="f-mono text-[10px] sm:text-xs uppercase text-justify leading-relaxed m-0" style={{ color: accent, letterSpacing: '0.05em' }}>
                             {work.description}
                         </p>
                     </div>
 
-                    <div className="inner-dash w-full" style={{ borderColor: accent, opacity: 0.4 }} />
+                    <div className="relative w-full border-t-[1.5px] border-dashed px-4 py-4 flex justify-between items-center" style={{ borderColor: accent }}>
+                        <div className="absolute w-2.5 h-2.5 rounded-full" style={{ background: accent, top: -5, left: -5 }} />
+                        <div className="absolute w-2.5 h-2.5 rounded-full" style={{ background: accent, top: -5, right: -5 }} />
 
-                    <div className="f-mono flex items-center justify-between px-5 py-3" style={{ color: accent }}>
-                        <span className="text-[11px] tracking-[0.15em] uppercase font-bold">LEIMXNSQUARE</span>
-                        <div className="flex items-center gap-3">
-                            <button
-                                onClick={() => setShowPreview(true)}
-                                className="f-mono text-[10px] tracking-[0.18em] uppercase px-3 py-1 bg-transparent cursor-pointer"
-                                style={{ color: accent, border: `1px solid ${accent}`, opacity: 0.75, transition: 'opacity 0.2s ease' }}
-                                onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-                                onMouseLeave={e => e.currentTarget.style.opacity = '0.75'}
+                        <span className="f-serif text-lg sm:text-xl tracking-widest uppercase flex items-center gap-2" style={{ color: accent }}>
+                            ● LEIMXNSQUARE
+                        </span>
+
+                        {work.link ? (
+                            <a
+                                href={work.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="f-serif text-lg sm:text-xl tracking-widest uppercase flex items-center gap-2 hover:opacity-70 transition-opacity"
+                                style={{ color: accent, textDecoration: 'none' }}
                             >
-                                PREVIEW ↗
-                            </button>
-                            {work.link && (
-                                <a
-                                    href={work.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="f-mono text-[10px] tracking-[0.18em] uppercase px-3 py-1"
-                                    style={{ color: accent, border: `1px solid ${accent}`, opacity: 0.8, textDecoration: 'none' }}
-                                >
-                                    VISIT ↗
-                                </a>
-                            )}
-                        </div>
-                        {!work.link && (
-                            <span className="text-[11px] tracking-[0.15em] uppercase font-bold">{work.year}</span>
+                                VISIT ↗ ●
+                            </a>
+                        ) : (
+                            <span className="f-serif text-lg sm:text-xl tracking-widest uppercase flex items-center gap-2" style={{ color: accent }}>
+                                {work.year} ●
+                            </span>
                         )}
                     </div>
                 </div>

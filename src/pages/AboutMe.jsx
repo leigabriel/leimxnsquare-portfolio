@@ -186,7 +186,7 @@ export default function AboutMe({ setIsMenuOpen, navigate }) {
                                         <h3 className="font-simsun text-5xl mb-6">Leimxnsquare</h3>
                                         <div className="w-full aspect-square overflow-hidden">
                                             <img
-                                                src="https://avatars.githubusercontent.com/u/223958636?v=4"
+                                                src="https://scontent.fmnl44-1.fna.fbcdn.net/v/t39.30808-6/633990022_1970971970483090_6269954113401431186_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=1d70fc&_nc_eui2=AeFYTJNSQXXPRuuu3dH_sBeLknulmyTBbrqSe6WbJMFuusBI4l6v4tRRmmtxPG-gHfcFz5TTS9v8LY71zqbfB-Ps&_nc_ohc=CmJlaTBFUUYQ7kNvwGfBAGN&_nc_oc=AdoueAGCwiMjnlFcGHr80VIZYMEic8Yqbp5Bpaseo7X4IK4j047HTfz5H2-aV_sCF4EZETVhBbDXdMFhGtAvplS6&_nc_zt=23&_nc_ht=scontent.fmnl44-1.fna&_nc_gid=wC9eV1_bffAWezGQufV6lA&_nc_ss=8&oh=00_Afxz18xhhGoEp_LdL2SSdmFurUewym9oRT7YwriMHLGR_A&oe=69C13AD1"
                                                 alt="Profile"
                                                 className="w-full h-full object-cover grayscale transition-transform duration-700 hover:scale-105"
                                             />
@@ -199,7 +199,7 @@ export default function AboutMe({ setIsMenuOpen, navigate }) {
                                                 I'm Leimxnsquare, a web developer and graphic designer from Oriental Mindoro, Philippines.
                                             </p>
                                             <p className="text-xl md:text-4xl text-black/80 leading-10">
-                                                Focused on UI/UX, graphic design, and modern web development.
+                                                I have a passion for creating visually clear and user-focused digital experiences. With a background in both graphic and web design, I focus on turning ideas into practical and well-structured solutions, with attention to detail in both visuals and usability.
                                             </p>
                                         </div>
                                     </div>

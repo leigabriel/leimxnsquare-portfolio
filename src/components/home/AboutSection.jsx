@@ -182,7 +182,7 @@ export default function AboutSection({ navigate }) {
                                     </div>
                                     <div className="p-3 sm:p-5 md:p-10 lg:p-12 flex-1 flex flex-col justify-center relative pr-10 sm:pr-12 lg:pr-24">
                                         <p className="text-[10px] sm:text-xs md:text-base lg:text-lg leading-relaxed uppercase tracking-widest max-w-2xl text-justify">
-                                            I'M AN ENTHUSIASTIC AND MULTIFACETED WEB DEVELOPER, GRAPHIC DESIGNER, AND PROGRAMMER. PASSIONATE ABOUT PUSHING CREATIVE BOUNDARIES, I CONSTANTLY SEEK TO EXPAND MY EXPERTISE ACROSS VARIOUS MEDIUMS LIKE MACHINE LEARNING AND DIGITAL ART. I THRIVE ON PROBLEM-SOLVING AND EMBRACE CHALLENGES WITH A PROACTIVE AND OPEN-MINDED APPROACH.
+                                            I’m a web developer and graphic designer who focuses on creating clean and functional digital work. I mainly work on graphic and web design, combining visuals and usability in every project. I enjoy solving problems and continuously improving my skills through hands-on experience.
                                         </p>
                                         <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-10 lg:w-16 flex items-center justify-center border-l border-black border-dotted md:border-none">
                                             <span className="transform rotate-90 md:-rotate-90 whitespace-nowrap text-[8px] sm:text-[10px] tracking-widest uppercase">

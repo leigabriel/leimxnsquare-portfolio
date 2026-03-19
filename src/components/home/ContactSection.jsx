@@ -191,11 +191,11 @@ export default function ContactSection({ navigate, setIsMenuOpen }) {
                         style={{ animationDelay: '0.45s' }}
                     >
                         <h1
-                            className="wordmark font-simsun uppercase text-white font-normal w-full block"
+                            className="wordmark font-simsun text-center uppercase text-white font-normal w-full block"
                             style={{
-                                fontSize: 'clamp(3.2rem, 16vw, 24rem)',
-                                lineHeight: '0.82',
-                                letterSpacing: '-0.02em',
+                                fontSize: 'clamp(2rem, 14.1vw, 24rem)',
+                                lineHeight: '1',
+                                letterSpacing: '0.02em',
                                 whiteSpace: 'nowrap',
                             }}
                             aria-label="LEIMXNSQUARE"

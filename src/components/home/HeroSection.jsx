@@ -77,7 +77,7 @@ export default function HeroSection({ setIsMenuOpen }) {
         const w = mount.clientWidth
         const h = mount.clientHeight
 
-        const buzz = new Audio('/sound/beesound.mp3')
+        const buzz = new Audio('/sounds/beesound.mp3')
         buzz.loop = true
         buzz.volume = 0
         buzzRef.current = buzz

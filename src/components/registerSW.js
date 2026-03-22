@@ -3,17 +3,10 @@ export function registerSW() {
 
     window.addEventListener('load', () => {
         navigator.serviceWorker
-            .register('/sw.js', { scope: '/' })
+            .register('/sw.js', { scope: '/', updateViaCache: 'none' })
             .then((reg) => {
-                reg.addEventListener('updatefound', () => {
-                    const next = reg.installing
-                    if (!next) return
-                    next.addEventListener('statechange', () => {
-                        if (next.state === 'installed' && navigator.serviceWorker.controller) {
-                            console.log('[SW] New version available. Reload to update.')
-                        }
-                    })
-                })
+                reg.update().catch(() => {})
+                setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000)
             })
             .catch((err) => console.error('[SW] Registration failed:', err))
     })

@@ -186,7 +186,7 @@ export default function AboutMe({ setIsMenuOpen, navigate }) {
                                         <h3 className="font-simsun text-5xl mb-6">Leimxnsquare</h3>
                                         <div className="w-full aspect-square overflow-hidden">
                                             <img
-                                                src="https://scontent.fmnl44-1.fna.fbcdn.net/v/t39.30808-6/633990022_1970971970483090_6269954113401431186_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=1d70fc&_nc_eui2=AeFYTJNSQXXPRuuu3dH_sBeLknulmyTBbrqSe6WbJMFuusBI4l6v4tRRmmtxPG-gHfcFz5TTS9v8LY71zqbfB-Ps&_nc_ohc=CmJlaTBFUUYQ7kNvwGfBAGN&_nc_oc=AdoueAGCwiMjnlFcGHr80VIZYMEic8Yqbp5Bpaseo7X4IK4j047HTfz5H2-aV_sCF4EZETVhBbDXdMFhGtAvplS6&_nc_zt=23&_nc_ht=scontent.fmnl44-1.fna&_nc_gid=wC9eV1_bffAWezGQufV6lA&_nc_ss=8&oh=00_Afxz18xhhGoEp_LdL2SSdmFurUewym9oRT7YwriMHLGR_A&oe=69C13AD1"
+                                                src="https://scontent.fmnl34-1.fna.fbcdn.net/v/t39.30808-1/704703149_2051209259126027_3945870805474832244_n.jpg?stp=dst-jpg_tt6&cstp=mx960x960&ctp=s200x200&_nc_cat=103&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeGe-uJP-BYrPHi9vHCbPblm8kZ9aGDLNQLyRn1oYMs1ArCZijLIy5oDrrsvQyF_Z17p7zDuWSJJ132IgTcyr1KN&_nc_ohc=5Rhz-L7ukfEQ7kNvwEkmYhc&_nc_oc=AdqpJdHJCIdkB6v-IXX_kITM9WtZMBqn-0jXOVB4p9bRVPnR_K9mca2gWFM1KJZHLqAOvXtwnZrK-S58EAqONaGw&_nc_zt=24&_nc_ht=scontent.fmnl34-1.fna&_nc_gid=JDLVHE4kHn7sjoS4ThKL6w&_nc_ss=7b2a8&oh=00_Af-NCvnPV-iV7ONs4xeIMtyIliWe0BGekEPiMyQzkyIL1A&oe=6A295A80"
                                                 alt="Profile"
                                                 className="w-full h-full object-cover grayscale transition-transform duration-700 hover:scale-105"
                                             />

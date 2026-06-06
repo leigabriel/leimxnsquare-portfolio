@@ -169,7 +169,7 @@ export default function AboutSection({ navigate }) {
                                 {sideDotsYellow()}
                                 <div className="w-full md:w-[30%] lg:w-[30%] border-t md:border-t-0 md:border-r border-black border-dotted relative min-h-40 sm:min-h-56 md:min-h-120 bg-[#FFEA00] flex items-center justify-center p-3 md:p-6">
                                     <img
-                                        src="/bee.png"
+                                        src="https://scontent.fmnl34-1.fna.fbcdn.net/v/t39.30808-1/704703149_2051209259126027_3945870805474832244_n.jpg?stp=dst-jpg_tt6&cstp=mx960x960&ctp=s200x200&_nc_cat=103&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeGe-uJP-BYrPHi9vHCbPblm8kZ9aGDLNQLyRn1oYMs1ArCZijLIy5oDrrsvQyF_Z17p7zDuWSJJ132IgTcyr1KN&_nc_ohc=5Rhz-L7ukfEQ7kNvwEkmYhc&_nc_oc=AdqpJdHJCIdkB6v-IXX_kITM9WtZMBqn-0jXOVB4p9bRVPnR_K9mca2gWFM1KJZHLqAOvXtwnZrK-S58EAqONaGw&_nc_zt=24&_nc_ht=scontent.fmnl34-1.fna&_nc_gid=JDLVHE4kHn7sjoS4ThKL6w&_nc_ss=7b2a8&oh=00_Af-NCvnPV-iV7ONs4xeIMtyIliWe0BGekEPiMyQzkyIL1A&oe=6A295A80"
                                         alt="Profile"
                                         className="w-full h-full md:h-auto md:aspect-square object-fill"
                                     />
